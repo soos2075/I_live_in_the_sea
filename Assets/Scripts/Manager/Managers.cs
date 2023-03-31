@@ -12,11 +12,13 @@ public class Managers : MonoBehaviour
     ResourceManager _resource = new ResourceManager();
     PoolManager _pool = new PoolManager();
     UIManager _ui = new UIManager();
+    SoundManager _sound = new SoundManager();
 
 
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PoolManager Pool { get { return Instance._pool; } }
     public static UIManager UI { get { return Instance._ui; } }
+    public static SoundManager Sound { get { return Instance._sound; } }
 
 
 
