@@ -35,6 +35,29 @@ public class PlayerCameraController : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, chasingTarget.position, Time.deltaTime * camSpeed);
 
+        CheckOcean();
+    }
+
+
+    void CheckOcean()
+    {
+        Vector3 dir = Vector3.Normalize(transform.position - cam.transform.position);
+
+        //Debug.DrawRay(cam.transform.position, dir * -cam.transform.position.z, Color.red);
+
+        if (Physics.Raycast(cam.transform.position, dir, -cam.transform.position.z, LayerMask.GetMask("Water")))
+        {
+            RenderSettings.fog = false;
+        }
+        else if(Physics.Raycast(cam.transform.position, Vector3.down, 100, LayerMask.GetMask("Water")))
+        {
+            RenderSettings.fog = false;
+        }
+        else
+        {
+            RenderSettings.fog = true;
+        }
 
     }
+
 }

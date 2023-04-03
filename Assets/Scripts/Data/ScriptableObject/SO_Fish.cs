@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu]
+//[CreateAssetMenu]
 public class SO_Fish : ScriptableObject
 {
     public List<FishData> _data = new List<FishData>();
@@ -14,6 +14,8 @@ public class SO_Fish : ScriptableObject
         public string name;
         public float moveSpeed;
         public int size;
+
+        public GameObject prefab;
     }
 
 }
@@ -37,8 +39,49 @@ public class GuiTest : Editor
 
     public override void OnInspectorGUI()
     {
+        ViewAll();
+
         ButtonEvent();
         PageView();
+    }
+
+    void ViewAll()
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        float size_width = 50;
+        float size_height = 50;
+
+        float currentSpace = 100;
+
+        for (int i = 0; i < value._data.Count; i++)
+        {
+            if (value._data[i].fishSprite != null)
+            {
+                if (GUILayout.Button(value._data[i].fishSprite.texture, GUILayout.Width(size_width), GUILayout.Height(size_height)))
+                {
+                    index = i;
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("None",GUILayout.Width(size_width), GUILayout.Height(size_height)))
+                {
+                    index = i;
+                }
+            }
+            currentSpace += size_width;
+            if (currentSpace > EditorGUIUtility.currentViewWidth)
+            {
+                currentSpace = 100;
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.LabelField($"{i + 1}");
+                EditorGUILayout.BeginHorizontal();
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space(10);
     }
 
 
@@ -83,6 +126,8 @@ public class GuiTest : Editor
 
         value._data[index].moveSpeed = (float)EditorGUILayout.FloatField("속도", value._data[index].moveSpeed);
         value._data[index].size = (int)EditorGUILayout.IntField("크기", value._data[index].size);
+
+        value._data[index].prefab = (GameObject)EditorGUILayout.ObjectField("프리팹", value._data[index].prefab, typeof(GameObject), true);
 
         EditorGUILayout.EndVertical();
 

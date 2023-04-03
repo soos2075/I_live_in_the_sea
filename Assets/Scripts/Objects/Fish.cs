@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
+    //? 필요한 스탯
+
+    float speed_Usual;
+    float speed_Maximum;
+
+    float size;
+
+
+
     void Start()
     {
         
@@ -13,4 +22,20 @@ public class Fish : MonoBehaviour
     {
         
     }
+
+    protected virtual void MoveSelf()
+    {
+
+    }
+
+    protected virtual void Runaway()
+    {
+
+    }
+
+    protected virtual void Attack()
+    {
+
+    }
+
 }
