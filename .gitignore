@@ -1,3 +1,9 @@
+# 참고자료
+/참고자료/
+# 에셋스토어
+/Assets/_AssetStore/
+
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore

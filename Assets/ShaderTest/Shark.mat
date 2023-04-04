@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Shark
+  m_Name: Shark
   m_Shader: {fileID: -6465566751694194690, guid: 4c5f7e69bea92524cad37f11d6a7f40b,
     type: 3}
   m_ShaderKeywords: 
@@ -19,7 +19,11 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _SampleTexture2D_AF976E4F_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 046f0687a8e053648949194a16f36c33, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_DB7278C3: 0
     m_Colors:

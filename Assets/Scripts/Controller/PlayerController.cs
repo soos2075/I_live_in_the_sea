@@ -8,13 +8,26 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float rotaSpeed;
 
+    Rigidbody rig;
+
     void Start()
     {
-        
+        rig = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
+        CheckOcean();
+
+        
+    }
+
+    private void FixedUpdate()
+    {
+        if (rig.useGravity)
+        {
+            return;
+        }
         PlayerMoveKeyboard();
     }
 
@@ -25,7 +38,10 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 moveDir = Vector3.up * Input.GetAxisRaw("Vertical") + Vector3.right * Input.GetAxisRaw("Horizontal");
             //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime * rotaSpeed);
-            transform.Translate(moveDir.normalized * Time.deltaTime * moveSpeed, Space.World);
+            //transform.Translate(moveDir.normalized * Time.deltaTime * moveSpeed, Space.World);
+
+            //rig.MovePosition(transform.position + moveDir.normalized * Time.deltaTime * moveSpeed);
+            rig.AddForce(moveDir.normalized * Time.deltaTime * moveSpeed * 100);
         }
 
         //? 각도
@@ -62,5 +78,19 @@ public class PlayerController : MonoBehaviour
                 Time.deltaTime * rotaSpeed);
             }
         }
+    }
+
+
+    void CheckOcean()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, 100, LayerMask.GetMask("Water")))
+        {
+            rig.useGravity = true;
+        }
+        else
+        {
+            rig.useGravity = false;
+        }
+
     }
 }

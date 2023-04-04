@@ -24,7 +24,7 @@ public class PlayerCameraController : MonoBehaviour
         
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         if (chasingTarget == null)
         {

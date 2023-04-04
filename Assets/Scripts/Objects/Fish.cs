@@ -5,11 +5,29 @@ using UnityEngine;
 public class Fish : MonoBehaviour
 {
     //? 필요한 스탯
+    public float moveSpeed; //? PlayerStat - 이동속도
+    public float rotaSpeed; //? PlayerStat - 회전속도
 
-    float speed_Usual;
-    float speed_Maximum;
+    public float size;
 
-    float size;
+    //? 플레이어블
+    public enum Playerable
+    {
+        Player,
+        Neutrality, //? 중립
+        Hostile,    //? 적대적
+
+    }
+    //? 현재상태
+    public enum State
+    {
+        Idle,
+        Chasing,
+        Runaway,
+    }
+
+    public Playerable playerable;
+    public State state;
 
 
 
