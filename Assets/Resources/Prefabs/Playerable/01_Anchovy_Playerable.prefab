@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8602168205479081232}
   - component: {fileID: 8602168205479081239}
   - component: {fileID: 8602168205479081233}
-  - component: {fileID: 6973402589770425653}
+  - component: {fileID: 3623922305097495660}
   m_Layer: 9
   m_Name: 01_Anchovy_Playerable
   m_TagString: Untagged
@@ -107,11 +107,11 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0.8
-  m_AngularDrag: 0.05
+  m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 56
   m_CollisionDetection: 0
 --- !u!114 &8602168205479081233
 MonoBehaviour:
@@ -125,9 +125,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c27f38ab2b2ea4a8c1d0111889efbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  rotaSpeed: 2
---- !u!114 &6973402589770425653
+  moveSpeed: 0
+  rotaSpeed: 0
+  forceNormal: 0
+  forceWeak: 0
+  size: 0
+  addForce: 0
+--- !u!114 &3623922305097495660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,6 +140,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8602168205479081238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b046f31eeb03614e845b9adedb79394, type: 3}
+  m_Script: {fileID: 11500000, guid: 7900de33c2a34c24795be6ba44a68b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 1
+  moveSpeed: 5
+  rotaSpeed: 2
+  forceNormal: 100
+  forceWeak: 10
+  playerable: 0
+  state: 0
+  a_type: 0
