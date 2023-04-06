@@ -16,11 +16,11 @@ public class Fish : MonoBehaviour
     //? 플레이어블
     public enum Playerable
     {
-        Player,
         Neutrality, //? 중립
+        Player,     //? 플레이어캐릭터 일때만, 지정은 PlayerController에서 해주고 이외에는 기본적으로 모두 중립인 상태.
         Hostile,    //? 적대적
-
     }
+
     //? 현재상태
     public enum State
     {
@@ -41,8 +41,34 @@ public class Fish : MonoBehaviour
 
     void Update()
     {
+
+    }
+    private void FixedUpdate()
+    {
+        switch (playerable)
+        {
+            case Playerable.Player:
+                PlayerableUpdate();
+                break;
+
+            default:
+                //? AI 업데이트
+                FixedUpdate_NonPlayerable();
+                break;
+        }
+    }
+
+    void PlayerableUpdate()
+    {
         RecoveryGage();
     }
+
+    protected virtual void FixedUpdate_NonPlayerable()
+    {
+        MoveSelf();
+    }
+
+
 
     protected virtual void Initialize()
     {

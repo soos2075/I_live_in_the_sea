@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 14468341d32f05045acf591973491cb0,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -10428,26 +10428,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 726682764}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2125512114 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1706810201141857073, guid: 2d422be4764f4f64aa86af003e4aa8db,
-    type: 3}
-  m_PrefabInstance: {fileID: 7670211084179545657}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &2125512115
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2125512114}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: ebfb4988eb16add4784122504f75fe2f, type: 2}
 --- !u!1001 &2125876259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10675,11 +10655,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ocean
-      objectReference: {fileID: 0}
-    - target: {fileID: 1706810201141857073, guid: 2d422be4764f4f64aa86af003e4aa8db,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1706810201141857085, guid: 2d422be4764f4f64aa86af003e4aa8db,
         type: 3}

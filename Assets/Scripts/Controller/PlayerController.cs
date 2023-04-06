@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
         fish = GetComponent<Fish>();
         if (fish)
         {
+            fish.playerable = Fish.Playerable.Player;
             size = fish.size;
         }
     }

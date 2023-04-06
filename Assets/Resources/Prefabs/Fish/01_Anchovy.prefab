@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 5068317736373299973}
   - component: {fileID: 7039899625884966863}
   - component: {fileID: 4711127753824117694}
-  m_Layer: 0
-  m_Name: FishV3
+  - component: {fileID: 1349852990}
+  - component: {fileID: 1349852989}
+  m_Layer: 31
+  m_Name: 01_Anchovy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8841202793435430426}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -91,6 +93,43 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7834934524071737294, guid: ae51ad94fa7d3764d957aa512d506d00, type: 3}
+--- !u!54 &1349852990
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841202793435430426}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 1.6
+  m_AngularDrag: 10
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
+--- !u!114 &1349852989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841202793435430426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7900de33c2a34c24795be6ba44a68b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 0
+  moveSpeed: 0
+  rotaSpeed: 0
+  forceNormal: 100
+  forceWeak: 10
+  playerable: 0
+  state: 0
+  abilityGage: 0
+  abilityGageMax: 0

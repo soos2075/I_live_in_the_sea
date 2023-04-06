@@ -14,7 +14,13 @@ TagManager:
   - 
   - 
   - Player
-  - Fish
+  - 
+  - Ground
+  - Boundary
+  - 
+  - 
+  - 
+  - BoidsTest
   - 
   - 
   - 
@@ -28,15 +34,9 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Fish_Large
+  - Fish_Middle
+  - Fish_Small
   m_SortingLayers:
   - name: Default
     uniqueID: 0
