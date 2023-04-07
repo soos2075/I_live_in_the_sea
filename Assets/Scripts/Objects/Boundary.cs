@@ -42,10 +42,15 @@ public class Boundary : MonoBehaviour
     Data data;
 
     public GameObject anc;
-    private void Start()
+    public int quantity;
+
+    private void Awake()
     {
         col = GetComponent<Collider>();
         data = new Data(_type, _pos, _radius, _xSize, _ySize);
+    }
+    private void Start()
+    {
         switch (data.type)
         {
             case BoundaryType.Sphere:
@@ -59,11 +64,10 @@ public class Boundary : MonoBehaviour
                 break;
         }
 
-
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    Instantiate(anc);
-        //}
+        for (int i = 0; i < quantity; i++)
+        {
+            Instantiate(anc, Random.insideUnitSphere * Vector2.one * 5, Quaternion.Euler(0, 0, Random.Range(0, 360)));
+        }
     }
     private void Update()
     {

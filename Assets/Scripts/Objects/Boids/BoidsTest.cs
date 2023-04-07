@@ -5,10 +5,14 @@ using UnityEngine;
 public class BoidsTest : MonoBehaviour
 {
     public GameObject obj;
+    public int Quantity;
+    public Transform pos;
 
     Vector3 ranVec;
     Quaternion ranRot;
 
+    [Range(0, 5)]
+    public float egoWeight;
     [Range(0, 5)]
     public float cohesionWeight;
     [Range(0, 5)]
@@ -18,12 +22,12 @@ public class BoidsTest : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 300; i++)
+        for (int i = 0; i < Quantity; i++)
         {
-            ranVec = Random.insideUnitSphere * 20;
-            ranRot = Quaternion.Euler(Random.Range(0, 360), Random.Range(0, 360), 0);
+            ranVec = Random.insideUnitSphere * 5 * Vector2.one;
+            ranRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
 
-            Instantiate(obj, ranVec, ranRot);
+            Instantiate(obj, ranVec + pos.position, ranRot);
         }
     }
 

@@ -19,31 +19,31 @@ public class BoidUnit : MonoBehaviour
         rig = GetComponent<Rigidbody>();
 
         StartCoroutine("FindNeighbourCoroutine");
-        targetVec = transform.forward;
+        //targetVec = transform.forward;
+        targetVec = transform.right;
+        //transform.rotation = Quaternion.AngleAxis(90, Vector3.up) * transform.forward;
     }
 
     void Update()
     {
-        Vector3 cohesionVec = CalculateCohesionVector() * boids.cohesionWeight;
-        Vector3 alignmentVec = CalculateAlignmentVector() * boids.alignmentWeight;
-        Vector3 separationVec = CalculateSeparationVector() * boids.separationWeight;
+        //Vector3 cohesionVec = CalculateCohesionVector() * boids.cohesionWeight;
+        //Vector3 alignmentVec = CalculateAlignmentVector() * boids.alignmentWeight;
+        //Vector3 separationVec = CalculateSeparationVector() * boids.separationWeight;
 
-        targetVec = cohesionVec + alignmentVec + separationVec;
+        //targetVec = cohesionVec + alignmentVec + separationVec;
 
+        //if (!Physics.CheckSphere(transform.position, 1, LayerMask.GetMask("Boundary")))
+        //{
+        //    targetVec += Vector3.Cross(Vector3.zero - transform.position, -transform.up).normalized * 1;
+        //    targetVec += (Vector3.zero - transform.position).normalized * 1;
+        //}
 
-        targetVec = Vector3.Lerp(this.transform.forward, targetVec, Time.deltaTime);
-        targetVec = targetVec.normalized;
+        //targetVec = Vector3.Lerp(this.transform.forward, targetVec, Time.deltaTime);
+        //targetVec = targetVec.normalized;
 
-        if (!Physics.CheckSphere(transform.position, 1, LayerMask.GetMask("Boundary")))
-        {
-            //Debug.Log("범위 벗어남");
-            targetVec = Vector3.zero - transform.position;
-        }
-
-
-
-        transform.rotation = Quaternion.LookRotation(targetVec);
-        rig.AddForce(targetVec * moveSpd * Time.deltaTime * 100);
+        transform.rotation = Quaternion.LookRotation(transform.forward);
+        //var a = Quaternion.AngleAxis(-90, Vector3.up) * targetVec;
+        rig.AddForce(-targetVec * moveSpd * Time.deltaTime * 100);
     }
 
 
@@ -128,5 +128,13 @@ public class BoidUnit : MonoBehaviour
         separationVec.Normalize();
         return separationVec;
     }
+
+    //? 회피(장애물) - Avoidance
+    private Vector3 CalculateAvoidanceVector(Vector3 currentVec)
+    {
+        return Vector3.zero;
+    }
+
+    //? 회피(포식자) - Evasion
 
 }

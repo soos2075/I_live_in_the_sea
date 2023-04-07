@@ -105,7 +105,7 @@ Rigidbody:
   m_GameObject: {fileID: 8841202793435430426}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 1.6
+  m_Drag: 3
   m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -129,7 +129,14 @@ MonoBehaviour:
   rotaSpeed: 0
   forceNormal: 100
   forceWeak: 10
+  flock_Radius: 3
   playerable: 0
   state: 0
+  isFlocking: 0
+  neighbours: []
   abilityGage: 0
   abilityGageMax: 0
+  _ego: 1
+  _cohesion: 1
+  _alignment: 1
+  _separation: 1

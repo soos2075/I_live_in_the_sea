@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CheckOcean();
+        //CheckOcean();
         if (fish && Input.GetKey(KeyCode.Space) || Input.GetKeyUp(KeyCode.Space))
         {
             fish.Ability();
@@ -91,16 +91,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void CheckOcean()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, 100, LayerMask.GetMask("Water")))
-        {
-            rig.useGravity = true;
-        }
-        else
-        {
-            rig.useGravity = false;
-        }
-    }
+    //void CheckOcean()
+    //{
+    //    if (Physics.Raycast(transform.position, Vector3.down, 100, LayerMask.GetMask("Water")))
+    //    {
+    //        rig.useGravity = true;
+    //    }
+    //    else
+    //    {
+    //        rig.useGravity = false;
+    //    }
+    //}
 
 }
