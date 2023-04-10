@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obj: {fileID: 8841202793435430426, guid: 038a8aa3e88097b469d635908b8a1650, type: 3}
-  Quantity: 300
+  Quantity: 100
   pos: {fileID: 944981758}
   egoWeight: 1
   cohesionWeight: 1

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1349852990}
   - component: {fileID: 1349852989}
   m_Layer: 31
-  m_Name: 01_Anchovy
+  m_Name: 00_Anchovy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,13 +130,16 @@ MonoBehaviour:
   forceNormal: 100
   forceWeak: 10
   flock_Radius: 3
+  predator_Radius: 5
+  predator_Angle: 120
   playerable: 0
-  state: 0
+  state: 1
   isFlocking: 0
   neighbours: []
   abilityGage: 0
   abilityGageMax: 0
   _ego: 1
-  _cohesion: 1
-  _alignment: 1
-  _separation: 1
+  _cohesion: 2.2
+  _alignment: 2.1
+  _separation: 1.3
+  _leader: 2.5

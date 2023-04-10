@@ -14,6 +14,8 @@ public class Fish : MonoBehaviour
     public float forceWeak = 10;     //? 특수상황 (물밖에 나갔거나 혹은 디버프)
 
     public float flock_Radius;      //? 주변 군집객체 탐색 범위
+    public float predator_Radius;   //? 주변 포식자 탐색 범위
+    public float predator_Angle;    //? 전방 포식자 탐색 각도
     
 
     //? 플레이어블
@@ -49,6 +51,7 @@ public class Fish : MonoBehaviour
     {
         Initialize();
         StartCoroutine(FindNeighbourCoroutine());
+        forward = transform.right.normalized;
     }
 
     protected virtual void Initialize()
@@ -121,7 +124,7 @@ public class Fish : MonoBehaviour
         switch (state)
         {
             case State.Wander:
-                moveDir = ego + cohesion + alignment + separation;
+                currentDir = ego + cohesion + alignment + separation;
 
                 break;
             case State.Sleep:
@@ -145,28 +148,61 @@ public class Fish : MonoBehaviour
         MoveSelf();
     }
 
-    protected Vector3 moveDir;
+    protected Vector3 currentDir;
     protected float currentSpeed;
     protected Rigidbody rig;
+    protected int ranAngle;
+    protected Vector3 forward;
+    protected float lastRotateCount;
 
-    protected virtual void MoveSelf()
+    protected void MoveSelf()
     {
-        float lerpSpd = Random.Range(CalculateAlignmentSpeed(), currentSpeed);
-        //Debug.Log(lerpSpd);
+        lastRotateCount += Time.deltaTime;
+        //? 역방향 회전시 순간부스터
+        if (Mathf.Abs(forward.x) > 0.25f && Mathf.Abs(currentDir.normalized.x) > 0.25f && Mathf.Abs(forward.x + currentDir.normalized.x) < 0.5f)
+        {
+            ranAngle = Random.Range(-15, 15);
+            forward = currentDir.normalized;
+            currentSpeed = Mathf.Lerp(currentSpeed, CalculateAlignmentSpeed(), Random.Range(0.3f,0.9f));
+            rig.AddForce(currentDir.normalized * Time.deltaTime * moveSpeed * forceNormal * 10);
+            lastRotateCount = 0;
+        }
 
-        Vector3 lerpDir = Vector3.Lerp(transform.right, moveDir, 0.5f);
-        rig.AddForce(lerpDir.normalized * Time.deltaTime * lerpSpd * forceNormal);
+        float lerpSpd = Mathf.Lerp(currentSpeed, CalculateAlignmentSpeed(), 0.5f);
+        //float lerpSpd = CalculateAlignmentSpeed();
+
+        Vector3 lerpDir = Vector3.Lerp(transform.right, currentDir, 0.5f);
+        //Vector3 lerpDir = currentDir;
+
+       rig.AddForce(lerpDir.normalized * Time.deltaTime * lerpSpd * forceNormal);
         //rig.AddForce(moveDir.normalized * Time.deltaTime * currentSpeed * forceNormal);
 
-        if (lerpDir.x > 0)
+        float degree = Mathf.Atan2(lerpDir.x, lerpDir.y) * -Mathf.Rad2Deg;
+        if (currentSpeed > 1.0f) //? 속도가 빠를땐 방향에 따른 부드러운 회전
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 90 + Mathf.Atan2(lerpDir.x, lerpDir.y) * -Mathf.Rad2Deg),
-                Time.deltaTime * rotaSpeed);
+            if (lerpDir.x > 0)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 90 + degree),
+                    Time.deltaTime * rotaSpeed);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -(90 + degree)),
+                    Time.deltaTime * rotaSpeed);
+            }
         }
-        else
+        else //? 속도가 느릴땐 방향고정 & 수직상하이동
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -(90 + Mathf.Atan2(lerpDir.x, lerpDir.y) * -Mathf.Rad2Deg)),
-                Time.deltaTime * rotaSpeed);
+            if (currentDir.x > 0) 
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, ranAngle),
+                    Time.deltaTime * rotaSpeed);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -180 + ranAngle),
+                    Time.deltaTime * rotaSpeed);
+            }
         }
     }
     
@@ -192,12 +228,14 @@ public class Fish : MonoBehaviour
     protected float weight_Cohesion;
     protected float weight_Alignment;
     protected float weight_Separation;
+    protected float weight_Ego;
 
-    protected void Initialize_Weight(float cohesion = 1, float alignment = 1, float separation = 1)
+    protected void Initialize_Weight(float cohesion = 1, float alignment = 1, float separation = 1, float ego = 1)
     {
         weight_Cohesion = cohesion;
         weight_Alignment = alignment;
         weight_Separation = separation;
+        weight_Ego = ego;
     }
 
 
@@ -210,7 +248,7 @@ public class Fish : MonoBehaviour
         for (int i = 0; i < colls.Length; i++)
         {
             neighbours.Add(colls[i].GetComponent<Fish>());
-            if (i > 10)
+            if (i > 15)
             {
                 break;
             }
@@ -218,10 +256,11 @@ public class Fish : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
         findNeighbourCoroutine = StartCoroutine("FindNeighbourCoroutine");
     }
+    //? 응집 - Cohesion
     protected Vector3 CalculateCohesionVector()
     {
         Vector3 cohesionVec = Vector3.zero;
-        if (neighbours.Count > 0)
+        if (neighbours.Count > 1)
         {
             // 이웃 unit들의 위치 더하기
             for (int i = 0; i < neighbours.Count; i++)
@@ -246,12 +285,12 @@ public class Fish : MonoBehaviour
     protected Vector3 CalculateAlignmentVector()
     {
         Vector3 alignmentVec = Vector3.zero;
-        if (neighbours.Count > 0)
+        if (neighbours.Count > 1)
         {
             // 이웃들이 향하는 방향의 평균 방향으로 이동
             for (int i = 0; i < neighbours.Count; i++)
             {
-                alignmentVec += neighbours[i].moveDir;
+                alignmentVec += neighbours[i].currentDir;
             }
         }
         else
@@ -268,7 +307,7 @@ public class Fish : MonoBehaviour
     protected Vector3 CalculateSeparationVector()
     {
         Vector3 separationVec = Vector3.zero;
-        if (neighbours.Count > 0)
+        if (neighbours.Count > 1)
         {
             // 이웃들을 피하는 방향으로 이동
             for (int i = 0; i < neighbours.Count; i++)
@@ -286,6 +325,30 @@ public class Fish : MonoBehaviour
         return separationVec;
     }
 
+    //? 대장따르기 - Leader
+    protected Vector3 CalculateLeaderVector()
+    {
+        Vector3 vec = Vector3.zero;
+        if (neighbours.Count > 1)
+        {
+            for (int i = 0; i < neighbours.Count; i++)
+            {
+                if (neighbours[i].weight_Ego > 2)
+                {
+                    vec += neighbours[i].currentDir;
+                }
+            }
+        }
+        vec.Normalize();
+        return vec;
+    }
+
+    //? 목적지 - Destination
+    protected Vector3 CalculateDestination(Vector3 vector)
+    {
+        return vector;
+    }
+
     //? 자아 - ego
     protected virtual Vector3 EgoVector()
     {
@@ -295,9 +358,8 @@ public class Fish : MonoBehaviour
     protected float CalculateAlignmentSpeed()
     {
         float spd = currentSpeed;
-        if (neighbours.Count > 0)
+        if (neighbours.Count > 1)
         {
-            // 이웃들이 향하는 방향의 평균 방향으로 이동
             for (int i = 0; i < neighbours.Count; i++)
             {
                 spd += neighbours[i].currentSpeed;

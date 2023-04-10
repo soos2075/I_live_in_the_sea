@@ -8,6 +8,7 @@ public class Anchovy : Fish
     [Range(0, 5)] public float _cohesion;
     [Range(0, 5)] public float _alignment;
     [Range(0, 5)] public float _separation;
+    [Range(0, 5)] public float _leader;
 
 
     BoidsTest test;
@@ -18,27 +19,26 @@ public class Anchovy : Fish
 
         if (playerable == Playerable.Player)
         {
-            Initialize_Ability(abilityType.Keep, 240, 4, 0.4f);
+            Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
         }
         else
         {
             groundLayer = LayerMask.GetMask("Ground") | LayerMask.GetMask("Water") | LayerMask.GetMask("Boundary");
             area = FindObjectOfType<Boundary>().GetBoundaryData();
 
-            Initialize_Stat(1, 5, 2, 100, 10);
-            Initialize_Weight(_cohesion, _alignment, _separation);
+            Initialize_Stat(1, 5, 5, 100, 10);
+            Initialize_Weight(_cohesion, _alignment, _separation, _ego);
 
             SetRandomValue();
             StartCoroutine(RandomValueRepeater());
         }
-
 
         test = FindObjectOfType<BoidsTest>();
     }
 
     protected override void AbilityStart()
     {
-        moveSpeed = 8f;
+        moveSpeed = 15f;
         abilityGage--;
     }
 
@@ -51,25 +51,27 @@ public class Anchovy : Fish
 
     protected override void FixedUpdate_NonPlayerable()
     {
-        _ego = test.egoWeight;
-        _cohesion = test.cohesionWeight;
-        _alignment = test.alignmentWeight;
-        _separation = test.separationWeight;
+        //_ego = test.egoWeight;
+        //_cohesion = test.cohesionWeight;
+        //_alignment = test.alignmentWeight;
+        //_separation = test.separationWeight;
 
         CollisionInteract();
 
-        Vector3 ego = EgoVector() * _ego;
+        Vector3 ego = EgoVector() * _ego * (currentSpeed * 0.5f);
         Vector3 cohesion = CalculateCohesionVector() * _cohesion;
         Vector3 alignment = CalculateAlignmentVector() * _alignment;
         Vector3 separation = CalculateSeparationVector() * _separation;
+        Vector3 leader = CalculateLeaderVector() * _leader;
 
         switch (state)
         {
             case State.Wander:
-                moveDir = ego + cohesion + alignment + separation;
-
+                currentDir = ego + cohesion + alignment + separation + leader;
                 break;
             case State.Sleep:
+                currentDir = ego + CalculateDestination(Vector3.down);
+                currentSpeed = ranSpd * 0.1f;
                 break;
             case State.Activity:
                 break;
@@ -96,7 +98,7 @@ public class Anchovy : Fish
     void SetRandomValue()
     {
         ranDir = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-0.5f, 0.5f), 0);
-        ranSpd = Random.Range(0.1f, moveSpeed);
+        ranSpd = Random.Range(1.0f, moveSpeed);
     }
 
     protected override Vector3 EgoVector()
@@ -107,28 +109,17 @@ public class Anchovy : Fish
 
     IEnumerator RandomValueRepeater()
     {
-        while (state == State.Wander)
-        {
-            yield return new WaitForSeconds(10);
-            SetRandomValue();
-        }
+        yield return new WaitUntil(() => lastRotateCount > 15);
+        SetRandomValue();
+        lastRotateCount = 0;
+        StartCoroutine(RandomValueRepeater());
+
+        //while (state == State.Wander)
+        //{
+        //    yield return new WaitForSeconds(10);
+        //    SetRandomValue();
+        //}
     }
-
-    //protected override void MoveSelf()
-    //{
-    //    rig.AddForce(ranDir.normalized * Time.deltaTime * ranSpd * forceNormal);
-
-    //    if (ranDir.x > 0)
-    //    {
-    //        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 90 + Mathf.Atan2(ranDir.x, ranDir.y) * -Mathf.Rad2Deg),
-    //            Time.deltaTime * rotaSpeed);
-    //    }
-    //    else
-    //    {
-    //        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -(90 + Mathf.Atan2(ranDir.x, ranDir.y) * -Mathf.Rad2Deg)),
-    //            Time.deltaTime * rotaSpeed);
-    //    }
-    //}
 
 
     int groundLayer;

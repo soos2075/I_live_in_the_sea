@@ -27,7 +27,11 @@ public class BoidsTest : MonoBehaviour
             ranVec = Random.insideUnitSphere * 5 * Vector2.one;
             ranRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
 
-            Instantiate(obj, ranVec + pos.position, ranRot);
+            var aaa = Instantiate(obj, ranVec + pos.position, ranRot);
+            //if (i % 10 == 0)
+            //{
+            //    aaa.GetComponent<Anchovy>()._ego = 5;
+            //}
         }
     }
 
