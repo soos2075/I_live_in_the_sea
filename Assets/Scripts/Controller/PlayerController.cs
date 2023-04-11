@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         if (fish)
         {
             fish.playerable = Fish.Playerable.Player;
-            size = fish.size;
+            size = fish.Size;
         }
     }
 
@@ -39,11 +39,11 @@ public class PlayerController : MonoBehaviour
     {
         if (rig.useGravity)
         {
-            addForce = fish.forceWeak;
+            addForce = fish.ForceWeak;
         }
         else
         {
-            addForce = fish.forceNormal;
+            addForce = fish.ForceNormal;
         }
         PlayerMoveKeyboard();
     }
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0)
         {
             Vector3 moveDir = Vector3.up * Input.GetAxisRaw("Vertical") + Vector3.right * Input.GetAxisRaw("Horizontal");
-            rig.AddForce(moveDir.normalized * Time.deltaTime * fish.moveSpeed * addForce);
+            rig.AddForce(moveDir.normalized * Time.deltaTime * fish.MoveSpeed * addForce);
         }
 
         //? 각도
@@ -66,13 +66,13 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 moveDir = Vector3.up * Input.GetAxisRaw("Vertical") + Vector3.right * Input.GetAxisRaw("Horizontal");
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 90 + Mathf.Atan2(moveDir.x, moveDir.y) * -Mathf.Rad2Deg),
-                Time.deltaTime * fish.rotaSpeed);
+                Time.deltaTime * fish.RotaSpeed);
         }
         else if(Input.GetAxisRaw("Horizontal") < 0)
         {
             Vector3 moveDir = Vector3.up * Input.GetAxisRaw("Vertical") + Vector3.right * Input.GetAxisRaw("Horizontal");
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -(90 + Mathf.Atan2(moveDir.x, moveDir.y) * -Mathf.Rad2Deg)),
-                Time.deltaTime * fish.rotaSpeed);
+                Time.deltaTime * fish.RotaSpeed);
         }
         else if (Input.GetAxisRaw("Vertical") != 0)
         {
@@ -81,12 +81,12 @@ public class PlayerController : MonoBehaviour
             if (Mathf.Abs(transform.eulerAngles.y) > 90)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -(90 + Mathf.Atan2(moveDir.x, moveDir.y) * -Mathf.Rad2Deg)),
-                Time.deltaTime * fish.rotaSpeed);
+                Time.deltaTime * fish.RotaSpeed);
             }
             else if (Mathf.Abs(transform.eulerAngles.y) < 90)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 90 + Mathf.Atan2(moveDir.x, moveDir.y) * -Mathf.Rad2Deg),
-                Time.deltaTime * fish.rotaSpeed);
+                Time.deltaTime * fish.RotaSpeed);
             }
         }
     }

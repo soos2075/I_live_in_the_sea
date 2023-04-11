@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Anchovy : Fish
+public class Shark : Fish
 {
     [Space(10)]
     [Header("Stat Settings")]
@@ -30,6 +30,7 @@ public class Anchovy : Fish
     public bool showRadiusGizmos;
 
 
+
     void Settings()
     {
         Initialize_Stat(_size, _moveSpeed, _rotaSpeed, _forceNormal, _forceWeak);
@@ -41,9 +42,9 @@ public class Anchovy : Fish
         SearchRadius = _predatorRadius;
         SearchAngle = _predatorAngle;
 
-        FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
-        FoodLayer = LayerMask.GetMask("Zooplankton") | LayerMask.GetMask("Phytoplankton");
-        PredatorLayer = LayerMask.GetMask("Predator_Small") | LayerMask.GetMask("Predator_Middle") | LayerMask.GetMask("Predator_Large");
+        FlockLayer = LayerMask.GetMask("Predator_Large");
+        FoodLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
+        PredatorLayer = 0;
 
         SetBoundary();
     }
@@ -67,12 +68,9 @@ public class Anchovy : Fish
         }
         else
         {
-            
-        }
 
-        //test = FindObjectOfType<BoidsTest>();
+        }
     }
-    //BoidsTest test;
 
 
     #region Player Ability
@@ -92,21 +90,9 @@ public class Anchovy : Fish
 
     protected override void FixedUpdate_NonPlayerable()
     {
-        //_ego = test.egoWeight;
-        //_cohesion = test.cohesionWeight;
-        //_alignment = test.alignmentWeight;
-        //_separation = test.separationWeight;
-
-        CollisionInteract();
-
         base.FixedUpdate_NonPlayerable();
     }
 
-    void CollisionInteract()
-    {
-        Debug.DrawRay(transform.position, ranDir.normalized * 1);
-        Debug.DrawRay(transform.position, transform.right * 1, Color.blue);
-    }
 
     private void OnDrawGizmos()
     {
@@ -116,7 +102,4 @@ public class Anchovy : Fish
             Gizmos.DrawWireSphere(transform.position, _predatorRadius);
         }
     }
-
-
-
 }

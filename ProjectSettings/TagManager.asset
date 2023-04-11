@@ -29,14 +29,14 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Predator_Large
+  - Predator_Middle
+  - Predator_Small
   - Fish_Large
   - Fish_Middle
   - Fish_Small
+  - Zooplankton
+  - Phytoplankton
   m_SortingLayers:
   - name: Default
     uniqueID: 0

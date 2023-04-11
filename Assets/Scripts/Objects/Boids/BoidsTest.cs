@@ -8,6 +8,10 @@ public class BoidsTest : MonoBehaviour
     public int Quantity;
     public Transform pos;
 
+    public GameObject obj2;
+    public int Quantity2;
+    public Transform pos2;
+
     Vector3 ranVec;
     Quaternion ranRot;
 
@@ -32,6 +36,14 @@ public class BoidsTest : MonoBehaviour
             //{
             //    aaa.GetComponent<Anchovy>()._ego = 5;
             //}
+        }
+
+        for (int i = 0; i < Quantity2; i++)
+        {
+            ranVec = Random.insideUnitSphere * 5 * Vector2.one;
+            ranRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
+
+            var aaa = Instantiate(obj2, ranVec + pos2.position, ranRot);
         }
     }
 

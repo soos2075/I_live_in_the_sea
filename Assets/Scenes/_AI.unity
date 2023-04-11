@@ -637,6 +637,9 @@ MonoBehaviour:
   obj: {fileID: 8841202793435430426, guid: 038a8aa3e88097b469d635908b8a1650, type: 3}
   Quantity: 100
   pos: {fileID: 944981758}
+  obj2: {fileID: 8679952446491285173, guid: 2140c2955bd97a246abbd7f562d97429, type: 3}
+  Quantity2: 0
+  pos2: {fileID: 944981758}
   egoWeight: 1
   cohesionWeight: 1
   alignmentWeight: 1
