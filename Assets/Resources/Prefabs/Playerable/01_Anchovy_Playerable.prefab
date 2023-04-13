@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &306957144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 306957145}
+  m_Layer: 8
+  m_Name: pos_head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &306957145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306957144}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.381, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8947204147272036268}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &773873011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 773873012}
+  m_Layer: 8
+  m_Name: pos_tale
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &773873012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773873011}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.478, y: -0.118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8947204147272036268}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8602168205479081238
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,7 +75,7 @@ GameObject:
   - component: {fileID: 8602168205479081239}
   - component: {fileID: 8602168205479081233}
   - component: {fileID: 3623922305097495660}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: 01_Anchovy_Playerable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +92,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -3, y: 3, z: 3}
-  m_Children: []
+  m_Children:
+  - {fileID: 773873012}
+  - {fileID: 306957145}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -90,7 +152,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8602168205479081238}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da1cead996af87047a5c0eaf5a2604a6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -106,7 +168,7 @@ Rigidbody:
   m_GameObject: {fileID: 8602168205479081238}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.8
+  m_Drag: 1
   m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -125,10 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c27f38ab2b2ea4a8c1d0111889efbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
-  rotaSpeed: 0
-  forceNormal: 0
-  forceWeak: 0
   size: 0
   addForce: 0
 --- !u!114 &3623922305097495660
@@ -143,11 +201,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7900de33c2a34c24795be6ba44a68b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 1
-  moveSpeed: 5
-  rotaSpeed: 2
-  forceNormal: 100
-  forceWeak: 10
-  playerable: 0
+  playerable: 1
   state: 0
-  a_type: 0
+  isFlocking: 0
+  HungerGage: 100
+  ActivityGage: 100
+  lerpDir: {x: 0, y: 0, z: 0}
+  lerpSpd: 0
+  neighbours: []
+  food: []
+  predator: []
+  abilityGage: 0
+  abilityGageMax: 0
+  _size: 1
+  _moveSpeed: 5
+  _rotaSpeed: 4
+  _forceNormal: 100
+  _forceWeak: 10
+  _ego: 0.8
+  _cohesion: 1.7
+  _alignment: 1.2
+  _separation: 1
+  _leader: 2
+  _randomResetCount: 15
+  _flockCount: 15
+  _flockRadius: 3
+  _predatorRadius: 5
+  _predatorAngle: 120
+  showRadiusGizmos: 0

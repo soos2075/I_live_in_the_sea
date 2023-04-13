@@ -30,9 +30,18 @@ public class Anchovy : Fish
     public bool showRadiusGizmos;
 
 
-    void Settings()
+
+    void Settings_Default()
     {
+        rig = GetComponent<Rigidbody>();
         Initialize_Stat(_size, _moveSpeed, _rotaSpeed, _forceNormal, _forceWeak);
+
+        FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
+        FoodLayer = LayerMask.GetMask("Zooplankton") | LayerMask.GetMask("Phytoplankton");
+        PredatorLayer = LayerMask.GetMask("Predator_Small") | LayerMask.GetMask("Predator_Middle") | LayerMask.GetMask("Predator_Large");
+    }
+    void Settings_AI()
+    {
         Initialize_Weight(_cohesion, _alignment, _separation, _ego, _leader);
 
         RandomResetCount = _randomResetCount;
@@ -40,10 +49,6 @@ public class Anchovy : Fish
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
         SearchAngle = _predatorAngle;
-
-        FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
-        FoodLayer = LayerMask.GetMask("Zooplankton") | LayerMask.GetMask("Phytoplankton");
-        PredatorLayer = LayerMask.GetMask("Predator_Small") | LayerMask.GetMask("Predator_Middle") | LayerMask.GetMask("Predator_Large");
 
         SetBoundary();
     }
@@ -56,10 +61,7 @@ public class Anchovy : Fish
 
     protected override void Initialize()
     {
-        Settings();
-
-        rig = GetComponent<Rigidbody>();
-
+        Settings_Default();
 
         if (playerable == Playerable.Player)
         {
@@ -67,12 +69,9 @@ public class Anchovy : Fish
         }
         else
         {
-            
+            Settings_AI();
         }
-
-        //test = FindObjectOfType<BoidsTest>();
     }
-    //BoidsTest test;
 
 
     #region Player Ability
@@ -88,7 +87,14 @@ public class Anchovy : Fish
     }
     #endregion
 
-
+    protected override void VirtualFixedUpdate()
+    {
+        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
+    }
+    protected override void PlayerableUpdate()
+    {
+        base.PlayerableUpdate();
+    }
 
     protected override void FixedUpdate_NonPlayerable()
     {

@@ -126,7 +126,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerable: 0
   state: 0
-  isFlocking: 0
   HungerGage: 100
   ActivityGage: 100
   lerpDir: {x: 0, y: 0, z: 0}
@@ -143,11 +142,11 @@ MonoBehaviour:
   _forceWeak: 10
   _ego: 0.8
   _cohesion: 1.7
-  _alignment: 1.2
+  _alignment: 1.5
   _separation: 1
-  _leader: 2
+  _leader: 1
   _randomResetCount: 15
-  _flockCount: 15
+  _flockCount: 20
   _flockRadius: 3
   _predatorRadius: 5
   _predatorAngle: 120

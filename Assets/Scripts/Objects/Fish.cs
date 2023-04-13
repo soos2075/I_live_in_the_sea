@@ -58,7 +58,7 @@ public class Fish : MonoBehaviour
                     currentSpeed = ranSpd * 1.0f;
                     break;
                 case State.Food:
-                    currentSpeed = MoveSpeed;
+                    currentSpeed = ranSpd * 1.0f;
                     break;
                 case State.Chasing:
                     currentSpeed = MoveSpeed;
@@ -75,12 +75,29 @@ public class Fish : MonoBehaviour
         } 
     }
 
-    public bool isFlocking = false;
+
+    public struct CoordinateUnification
+    {
+        public Vector3 Front;
+        public Vector3 Back;
+        public Vector3 Up;
+        public Vector3 Down;
+    }
+
+    public CoordinateUnification Coordinate;
+
+    protected void SetCoordinate(Vector3 f, Vector3 b, Vector3 u, Vector3 d)
+    {
+        Coordinate.Front = f;
+        Coordinate.Back = b;
+        Coordinate.Up = u;
+        Coordinate.Down = d;
+    }
 
     void Start()
     {
         Initialize();
-        forward = transform.right.normalized;
+        forward = Coordinate.Front.normalized;
 
         if (playerable == Playerable.Player)
         {
@@ -135,6 +152,8 @@ public class Fish : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        VirtualFixedUpdate();
+
         if (CheckOcean())
         {
             return;
@@ -146,16 +165,23 @@ public class Fish : MonoBehaviour
                 PlayerableUpdate();
                 break;
 
-            default:
+            case Playerable.Neutrality:
                 //? AI 업데이트
                 StateCheck();
                 FixedUpdate_NonPlayerable();
                 break;
+
+            default:
+                break;
         }
     }
 
+    protected virtual void VirtualFixedUpdate()
+    {
 
-    void PlayerableUpdate()
+    }
+
+    protected virtual void PlayerableUpdate()
     {
         RecoveryGage();
     }
@@ -177,11 +203,11 @@ public class Fish : MonoBehaviour
             if (StateFish == State.Food) return;
             StateFish = State.Food;
         }
-        //else if (ActivityGage > 30 && neighbours.Count > FlockCount * 0.5f)
-        //{
-        //    if (StateFish == State.Activity) return;
-        //    StateFish = State.Activity;
-        //}
+        else if (ActivityGage > 30 && neighbours.Count > FlockCount * 0.5f)
+        {
+            if (StateFish == State.Activity) return;
+            StateFish = State.Activity;
+        }
         else if (ActivityGage <= 30)
         {
             if (StateFish == State.Sleep) return;
@@ -240,7 +266,7 @@ public class Fish : MonoBehaviour
 
             case State.Activity:
                 Activity();
-                currentDir = ego + cohesion + alignment + separation + leader;
+                currentDir = (ego * 0.5f) + cohesion + alignment + separation + (leader * 2);
                 break;
 
             case State.Food:
@@ -300,7 +326,7 @@ public class Fish : MonoBehaviour
         lerpSpd = Mathf.Lerp(currentSpeed, CalculateAlignmentSpeed(), 0.5f);
         //float lerpSpd = CalculateAlignmentSpeed();
 
-        lerpDir = Vector3.Lerp(transform.right.normalized, currentDir.normalized, 0.35f);
+        lerpDir = Vector3.Lerp(Coordinate.Front.normalized, currentDir.normalized, 0.35f);
         //Vector3 lerpDir = currentDir;
 
        rig.AddForce(lerpDir.normalized * Time.deltaTime * lerpSpd * ForceNormal);
@@ -334,6 +360,7 @@ public class Fish : MonoBehaviour
             }
         }
     }
+
 
 
     //? 여기에 정렬 응집 분리 회피 찾기 추적 도착 도망 리더추격 헤메기   의 각 기능을 구현해놓고
@@ -412,10 +439,13 @@ public class Fish : MonoBehaviour
         Vector3 alignmentVec = Vector3.zero;
         if (neighbours.Count > 1)
         {
-            // 이웃들이 향하는 방향의 평균 방향으로 이동
+            //? 가야하는 방향과 그냥 오브젝트 기준 정면방향 두가지 방법이 있음
+            //? 전자는 단체회전이 잦음. 대신 에어리어를 잘지키고 확 방향전환을 순간가속을 함.
+            //? 후자는 단체이동중 에어리어를 벗어나도 꽤나 전진하는 모습. 추가로 정렬수치가 높으면 땅에 단체로 처박는 현상발생.
             for (int i = 0; i < neighbours.Count; i++)
             {
-                alignmentVec += neighbours[i].currentDir;
+                //alignmentVec += neighbours[i].currentDir;
+                alignmentVec += neighbours[i].Coordinate.Front;
             }
         }
         else
@@ -532,14 +562,14 @@ public class Fish : MonoBehaviour
     protected void AvodeGround()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.right, out hit, 1, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(transform.position, Coordinate.Front, out hit, 1, LayerMask.GetMask("Ground")))
         {
             ranDir = new Vector3(hit.normal.x, hit.normal.y, 0);
             rig.AddForce(ranDir.normalized * Time.deltaTime * MoveSpeed * ForceNormal * 10);
         }
-        else if (Physics.Raycast(transform.position, transform.right, out hit, 1, LayerMask.GetMask("Water")))
+        else if (Physics.Raycast(transform.position, Coordinate.Front, out hit, 1, LayerMask.GetMask("Water")))
         {
-            ranDir = new Vector3(transform.right.x, -transform.right.y, 0);
+            ranDir = new Vector3(Coordinate.Front.x, Coordinate.Back.y, 0);
         }
     }
 

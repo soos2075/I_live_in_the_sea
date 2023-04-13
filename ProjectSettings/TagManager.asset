@@ -14,16 +14,16 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - Obstacle
   - Ground
-  - Boundary
-  - 
+  - Seaweed
+  - BackgroundObject
   - 
   - 
   - BoidsTest
   - 
   - 
-  - 
+  - Boundary
   - 
   - 
   - 

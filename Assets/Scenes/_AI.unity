@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 944981758}
   - component: {fileID: 944981757}
   - component: {fileID: 944981759}
-  m_Layer: 11
+  m_Layer: 18
   m_Name: AnchovyArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
