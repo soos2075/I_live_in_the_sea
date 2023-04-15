@@ -42,8 +42,8 @@ MonoBehaviour:
     size: 20
     prefab: {fileID: 5925960515861282153, guid: 2fb93ff3c1250a74ca5f53a6bc162675,
       type: 3}
-  - fishSprite: {fileID: 0}
-    name: 
+  - fishSprite: {fileID: 21300000, guid: 0c411e74b7dc78f40b51db7598522507, type: 3}
+    name: "\uBC31\uC0C1\uC544\uB9AC"
     moveSpeed: 0
     size: 0
     prefab: {fileID: 0}

@@ -412,6 +412,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ocean
       objectReference: {fileID: 0}
+    - target: {fileID: 1706810201141857073, guid: 2d422be4764f4f64aa86af003e4aa8db,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 1706810201141857085, guid: 2d422be4764f4f64aa86af003e4aa8db,
         type: 3}
       propertyPath: m_RootOrder
@@ -483,7 +488,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1136616273
 Transform:
@@ -527,6 +532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2628175921061993486, guid: 3e493524e4cee7547badef8e5775de09,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2628175921061993487, guid: 3e493524e4cee7547badef8e5775de09,
         type: 3}
@@ -635,10 +645,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obj: {fileID: 8841202793435430426, guid: 038a8aa3e88097b469d635908b8a1650, type: 3}
-  Quantity: 100
+  Quantity: 300
   pos: {fileID: 944981758}
   obj2: {fileID: 8679952446491285173, guid: 2140c2955bd97a246abbd7f562d97429, type: 3}
-  Quantity2: 0
+  Quantity2: 1
   pos2: {fileID: 944981758}
   egoWeight: 1
   cohesionWeight: 1

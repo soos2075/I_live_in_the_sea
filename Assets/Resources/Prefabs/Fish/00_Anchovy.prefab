@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5227390374156535681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 787823853251739359}
+  m_Layer: 29
+  m_Name: pos_head (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &787823853251739359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5227390374156535681}
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.381, y: -0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8212757803423016096}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8154348559135963755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8588795720906486366}
+  m_Layer: 29
+  m_Name: pos_tail (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8588795720906486366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8154348559135963755}
+  m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.478, y: -0.118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8212757803423016096}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8841202793435430426
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,6 +74,8 @@ GameObject:
   - component: {fileID: 4711127753824117694}
   - component: {fileID: 1349852990}
   - component: {fileID: 1349852989}
+  - component: {fileID: -4471463733435377621}
+  - component: {fileID: 5168702118768354291}
   m_Layer: 29
   m_Name: 00_Anchovy
   m_TagString: Untagged
@@ -31,7 +93,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: -1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 8588795720906486366}
+  - {fileID: 787823853251739359}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,8 +210,45 @@ MonoBehaviour:
   _separation: 1
   _leader: 1
   _randomResetCount: 15
-  _flockCount: 20
+  _flockCount: 10
   _flockRadius: 3
   _predatorRadius: 5
   _predatorAngle: 120
   showRadiusGizmos: 0
+--- !u!114 &-4471463733435377621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841202793435430426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557abfaa91909d8489842eb991656858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 10
+  maxHp: 10
+  predatorList:
+  - Predator_Small
+  - Predator_Middle
+  - Predator_Large
+  predatorLayer: 0
+  isFade: 0
+  mat: {fileID: 0}
+--- !u!114 &5168702118768354291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841202793435430426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eatingDistance: 0.25
+  preyList:
+  - Zooplankton
+  - Phytoplankton

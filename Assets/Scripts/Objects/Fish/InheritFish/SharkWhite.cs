@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shark : Fish
+public class SharkWhite : Fish
 {
     [Space(10)]
     [Header("Stat Settings")]
@@ -43,10 +43,9 @@ public class Shark : Fish
         SearchAngle = _predatorAngle;
 
         FlockLayer = LayerMask.GetMask("Predator_Large");
-        FoodLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
-        PredatorLayer = 0;
-
-        SetBoundary();
+        PredatorLayer = GetComponent<Prey>().predatorLayer;
+        PreyLayer = GetComponent<Predator>().preyLayer;
+        //SetBoundary();
     }
     void SetBoundary()
     {
@@ -70,6 +69,52 @@ public class Shark : Fish
         {
 
         }
+        GetPos();
+    }
+
+    protected override void VirtualFixedUpdate()
+    {
+        SetCoordinate(-transform.forward, transform.forward, transform.up, -transform.up);
+    }
+
+    protected override void PlayerableUpdate()
+    {
+        base.PlayerableUpdate();
+        SizeCheck();
+    }
+    protected override void FixedUpdate_NonPlayerable()
+    {
+        base.FixedUpdate_NonPlayerable();
+    }
+
+
+
+
+    Transform pos_Tail;
+    Transform pos_Head;
+    void GetPos()
+    {
+        pos_Tail = transform.GetChild(0);
+        pos_Head = transform.GetChild(1);
+    }
+
+
+    protected void SizeCheck()
+    {
+        Ray back = new Ray(pos_Tail.position, Coordinate.Back);
+        Ray bottom = new Ray(pos_Tail.position, Coordinate.Down);
+
+        float offset = 0.2f;
+
+        //? 꼬리에서 아래쪽을 향하는 벡터
+        Debug.DrawRay(pos_Tail.position, Coordinate.Down * offset, Color.green);
+        //? 꼬리에서 반대쪽방향을 향하는 벡터
+        Debug.DrawRay(pos_Tail.position, Coordinate.Back * offset, Color.red);
+
+        //? 물고기 가로길이 확인용 / 이 선이 물고기의 배면에 닿아야함(혹은 배지느러미)
+        Debug.DrawRay(pos_Tail.position, Coordinate.Front * 20, Color.blue);
+        //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
+        Debug.DrawRay(pos_Tail.position, Coordinate.Up * 10, Color.white);
     }
 
 
@@ -88,10 +133,6 @@ public class Shark : Fish
 
 
 
-    protected override void FixedUpdate_NonPlayerable()
-    {
-        base.FixedUpdate_NonPlayerable();
-    }
 
 
     private void OnDrawGizmos()

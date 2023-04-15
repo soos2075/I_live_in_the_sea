@@ -63,6 +63,10 @@ public class PlayerController : MonoBehaviour
         //transform.Translate(moveDir.normalized * Time.deltaTime * moveSpeed, Space.World);
 
         Vector3 moveDir = Vector3.up * Input.GetAxis("Vertical") + Vector3.right * Input.GetAxis("Horizontal");
+        //if (moveDir == Vector3.zero)
+        //{
+        //    moveDir = fish.Coordinate.Front;
+        //}
 
         //? 이동
         if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
@@ -77,7 +81,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle_Z),
                 Time.deltaTime * fish.RotaSpeed);
         }
-        else if(Input.GetAxisRaw("Horizontal") < 0)
+        else if (Input.GetAxisRaw("Horizontal") < 0)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -angle_Z),
                 Time.deltaTime * fish.RotaSpeed);
@@ -95,6 +99,8 @@ public class PlayerController : MonoBehaviour
                 Time.deltaTime * fish.RotaSpeed);
             }
         }
+
+        transform.rotation = Quaternion.LookRotation(new Vector3(0, moveDir.y, moveDir.x));
     }
 
     void CollisionCheck()

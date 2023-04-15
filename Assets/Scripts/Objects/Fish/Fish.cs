@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Predator), typeof(Prey))]
 public class Fish : MonoBehaviour
 {
     //? 기본스탯
@@ -94,6 +95,7 @@ public class Fish : MonoBehaviour
         Coordinate.Down = d;
     }
 
+
     void Start()
     {
         Initialize();
@@ -114,7 +116,6 @@ public class Fish : MonoBehaviour
             searchPredatorCoroutine = StartCoroutine(SearchPredatorCoroutine());
             searchFoodCoroutine = StartCoroutine(SearchFoodCoroutine());
         }
-
     }
 
     protected virtual void Initialize()
@@ -146,10 +147,10 @@ public class Fish : MonoBehaviour
     }
 
 
-    void Update()
-    {
+    //void Update()
+    //{
         
-    }
+    //}
     private void FixedUpdate()
     {
         VirtualFixedUpdate();
@@ -359,6 +360,7 @@ public class Fish : MonoBehaviour
                     Time.deltaTime * RotaSpeed);
             }
         }
+
     }
 
 
@@ -402,7 +404,7 @@ public class Fish : MonoBehaviour
     protected float SearchAngle { get; set; }
 
     protected int FlockLayer { get; set; }
-    protected int FoodLayer { get; set; }
+    public int PreyLayer { get; protected set; }
     protected int PredatorLayer { get; set; }
     protected int BoundaryLayer { get; set; }
     #endregion
@@ -635,7 +637,7 @@ public class Fish : MonoBehaviour
     IEnumerator SearchFoodCoroutine()
     {
         food.Clear();
-        Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, FoodLayer);
+        Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, PreyLayer);
         for (int i = 0; i < colls.Length; i++)
         {
             food.Add(colls[i].GetComponent<Fish>());
