@@ -80,8 +80,8 @@ public class Shark : Fish
     Transform pos_Head;
     void GetPos()
     {
-        pos_Tail = transform.GetChild(0);
-        pos_Head = transform.GetChild(1);
+        pos_Tail = transform.GetChild(0).GetChild(0);
+        pos_Head = transform.GetChild(0).GetChild(1);
     }
     protected void SizeCheck()
     {

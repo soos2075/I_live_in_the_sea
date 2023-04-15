@@ -87,12 +87,12 @@ public class Fish : MonoBehaviour
 
     public CoordinateUnification Coordinate;
 
-    protected void SetCoordinate(Vector3 f, Vector3 b, Vector3 u, Vector3 d)
+    protected void SetCoordinate(Vector3 front, Vector3 back, Vector3 up, Vector3 down)
     {
-        Coordinate.Front = f;
-        Coordinate.Back = b;
-        Coordinate.Up = u;
-        Coordinate.Down = d;
+        Coordinate.Front = front;
+        Coordinate.Back = back;
+        Coordinate.Up = up;
+        Coordinate.Down = down;
     }
 
 
@@ -394,8 +394,8 @@ public class Fish : MonoBehaviour
 
 
     public List<Fish> neighbours = new List<Fish>();
-    public List<Fish> food = new List<Fish>();
-    public List<Fish> predator = new List<Fish>();
+    public List<Prey> food = new List<Prey>();
+    public List<Predator> predator = new List<Predator>();
 
     public float RandomResetCount { get; set; }
     protected int FlockCount { get; set; }
@@ -622,7 +622,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, FlockRadius, FlockLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            neighbours.Add(colls[i].GetComponent<Fish>());
+            neighbours.Add(colls[i].GetComponentInParent<Fish>());
             if (i > FlockCount)
             {
                 break;
@@ -640,7 +640,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, PreyLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            food.Add(colls[i].GetComponent<Fish>());
+            food.Add(colls[i].GetComponentInParent<Prey>());
             if (i > 5)
             {
                 break;
@@ -658,7 +658,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, PredatorLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            predator.Add(colls[i].GetComponent<Fish>());
+            predator.Add(colls[i].GetComponentInParent<Predator>());
             if (i > 1)
             {
                 break;

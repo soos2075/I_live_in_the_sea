@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
         rig = GetComponent<Rigidbody>();
         InitializeFishData();
 
-        pos_Tail = transform.GetChild(0);
-        pos_Head = transform.GetChild(1);
+        pos_Tail = transform.GetChild(0).GetChild(0);
+        pos_Head = transform.GetChild(0).GetChild(1);
     }
 
     void InitializeFishData()
@@ -63,10 +63,6 @@ public class PlayerController : MonoBehaviour
         //transform.Translate(moveDir.normalized * Time.deltaTime * moveSpeed, Space.World);
 
         Vector3 moveDir = Vector3.up * Input.GetAxis("Vertical") + Vector3.right * Input.GetAxis("Horizontal");
-        //if (moveDir == Vector3.zero)
-        //{
-        //    moveDir = fish.Coordinate.Front;
-        //}
 
         //? 이동
         if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
@@ -99,8 +95,6 @@ public class PlayerController : MonoBehaviour
                 Time.deltaTime * fish.RotaSpeed);
             }
         }
-
-        transform.rotation = Quaternion.LookRotation(new Vector3(0, moveDir.y, moveDir.x));
     }
 
     void CollisionCheck()

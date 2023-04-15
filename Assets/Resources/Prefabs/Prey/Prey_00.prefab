@@ -95,7 +95,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHP: 100
   maxHp: 100
-  mat: {fileID: 0}
   predatorList:
   - Fish_Small
   - Fish_Middle
@@ -103,8 +102,8 @@ MonoBehaviour:
   - Predator_Small
   - Predator_Middle
   - Predator_Large
-  predatorLayer: 0
-  isFade: 0
+  isFade: 1
+  mat: {fileID: 0}
 --- !u!135 &8010841082013799812
 SphereCollider:
   m_ObjectHideFlags: 0

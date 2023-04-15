@@ -22,10 +22,8 @@ public class Predator : MonoBehaviour
 
     void Start()
     {
-
-
         fish = GetComponent<Fish>();
-        head = transform.GetChild(1);
+        head = transform.GetChild(0).GetChild(1);
     }
 
     void Update()
@@ -46,7 +44,7 @@ public class Predator : MonoBehaviour
         var hits = Physics.OverlapSphere(head.position, eatingDistance, preyLayer);
         foreach (var prey in hits)
         {
-            prey.GetComponent<Prey>().Attacked(1);
+            prey.GetComponentInParent<Prey>().Attacked(1);
             break;
             //Debug.Log(prey);
         }

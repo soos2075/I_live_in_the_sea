@@ -644,10 +644,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0295389a62ccd458e6e79e2628e1e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obj: {fileID: 8841202793435430426, guid: 038a8aa3e88097b469d635908b8a1650, type: 3}
+  obj: {fileID: 2835128554215892342, guid: 9c00d616cb8a0464dbe7dbd8e7e739ef, type: 3}
   Quantity: 300
   pos: {fileID: 944981758}
-  obj2: {fileID: 8679952446491285173, guid: 2140c2955bd97a246abbd7f562d97429, type: 3}
+  obj2: {fileID: 144691863251165877, guid: 6337156bee9c57a459f4c03f3205125b, type: 3}
   Quantity2: 1
   pos2: {fileID: 944981758}
   egoWeight: 1

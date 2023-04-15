@@ -63,24 +63,24 @@ public class SharkWhite : Fish
 
         if (playerable == Playerable.Player)
         {
-            Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
+            //Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
         }
         else
         {
 
         }
-        GetPos();
+        //GetPos();
     }
 
     protected override void VirtualFixedUpdate()
     {
-        SetCoordinate(-transform.forward, transform.forward, transform.up, -transform.up);
+        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
     }
 
     protected override void PlayerableUpdate()
     {
         base.PlayerableUpdate();
-        SizeCheck();
+        //SizeCheck();
     }
     protected override void FixedUpdate_NonPlayerable()
     {
@@ -89,13 +89,13 @@ public class SharkWhite : Fish
 
 
 
-
+    #region 사이즈 체크할 때 쓰는곳
     Transform pos_Tail;
     Transform pos_Head;
     void GetPos()
     {
-        pos_Tail = transform.GetChild(0);
-        pos_Head = transform.GetChild(1);
+        pos_Tail = transform.GetChild(0).GetChild(0);
+        pos_Head = transform.GetChild(0).GetChild(1);
     }
 
 
@@ -116,7 +116,7 @@ public class SharkWhite : Fish
         //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
         Debug.DrawRay(pos_Tail.position, Coordinate.Up * 10, Color.white);
     }
-
+    #endregion
 
     #region Player Ability
     protected override void AbilityStart()

@@ -21,8 +21,10 @@ public class Prey : MonoBehaviour
     }
     void Start()
     {
-
-        mat = GetComponent<MeshRenderer>().material;
+        if (isFade)
+        {
+            mat = GetComponent<MeshRenderer>().material;
+        }
         currentHP = maxHp;
     }
 
