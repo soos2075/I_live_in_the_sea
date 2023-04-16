@@ -189,10 +189,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eatingDistance: 0.25
   preyList:
   - Zooplankton
   - Phytoplankton
+  showInteractRadius: 0
 --- !u!114 &2736216233640987250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerable: 0
   state: 0
-  HungerGage: 100
+  HungerGage: 25
   ActivityGage: 100
   lerpDir: {x: 0, y: 0, z: 0}
   lerpSpd: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   _rotaSpeed: 7
   _forceNormal: 100
   _forceWeak: 10
+  _interactRadius: 0.25
   _ego: 0.8
   _cohesion: 1.7
   _alignment: 1.5

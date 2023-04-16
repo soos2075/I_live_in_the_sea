@@ -5,12 +5,10 @@ using UnityEngine;
 public class Predator : MonoBehaviour
 {
     Fish fish;
-    Transform head;
-    public float eatingDistance;
-
     public List<string> preyList;
     public int preyLayer { get; set; }
 
+    public bool showInteractRadius;
 
     private void Awake()
     {
@@ -23,25 +21,25 @@ public class Predator : MonoBehaviour
     void Start()
     {
         fish = GetComponent<Fish>();
-        head = transform.GetChild(0).GetChild(1);
     }
 
     void Update()
     {
         EatingFood();
+        //Debug.DrawRay(head.position, transform.right * eatingDistance);
     }
 
     private void OnDrawGizmos()
     {
-        if (head)
+        if (showInteractRadius)
         {
-            Gizmos.DrawWireSphere(head.position, eatingDistance);
+            Gizmos.DrawWireSphere(fish.Pos_Head.position, fish.InteractRadius);
         }
     }
 
     void EatingFood()
     {
-        var hits = Physics.OverlapSphere(head.position, eatingDistance, preyLayer);
+        var hits = Physics.OverlapSphere(fish.Pos_Head.position, fish.InteractRadius, preyLayer);
         foreach (var prey in hits)
         {
             prey.GetComponentInParent<Prey>().Attacked(1);

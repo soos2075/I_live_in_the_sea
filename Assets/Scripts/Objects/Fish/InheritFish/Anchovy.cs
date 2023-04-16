@@ -5,12 +5,13 @@ using UnityEngine;
 public class Anchovy : Fish
 {
     [Space(10)]
-    [Header("Stat Settings")]
+    [Header("Default Settings")]
     public float _size;
     public float _moveSpeed;
     public float _rotaSpeed;
     public float _forceNormal;
     public float _forceWeak;
+    public float _interactRadius;
 
     [Space(10)]
     [Header("Weight Settings")]
@@ -37,10 +38,10 @@ public class Anchovy : Fish
         Initialize_Stat(_size, _moveSpeed, _rotaSpeed, _forceNormal, _forceWeak);
 
         FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
-        //PreyLayer = LayerMask.GetMask("Zooplankton") | LayerMask.GetMask("Phytoplankton");
-        //PredatorLayer = LayerMask.GetMask("Predator_Small") | LayerMask.GetMask("Predator_Middle") | LayerMask.GetMask("Predator_Large");
         PredatorLayer = GetComponent<Prey>().predatorLayer;
         PreyLayer = GetComponent<Predator>().preyLayer;
+
+        InteractRadius = _interactRadius;
     }
     void Settings_AI()
     {
@@ -75,6 +76,46 @@ public class Anchovy : Fish
         }
     }
 
+    protected override void VirtualFixedUpdate()
+    {
+        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
+    }
+    protected override void PlayerableUpdate()
+    {
+        base.PlayerableUpdate();
+    }
+
+    protected override void FixedUpdate_NonPlayerable()
+    {
+        base.FixedUpdate_NonPlayerable();
+        //SizeCheck();
+        //CollisionInteract();
+    }
+
+    #region DebugRay - 전방확인 - 향하는 방향, 가려고 하는 방향 / 후방확인 - 꼬리 아래 지형체크, 전체 사이즈 체크
+    void SizeCheck()
+    {
+        Ray back = new Ray(Pos_Tail.position, Coordinate.Back);
+        Ray bottom = new Ray(Pos_Tail.position, Coordinate.Down);
+
+        float offset = 0.2f;
+
+        //? 꼬리에서 아래쪽을 향하는 벡터
+        Debug.DrawRay(Pos_Tail.position, Coordinate.Down * offset, Color.green);
+        //? 꼬리에서 반대쪽방향을 향하는 벡터
+        Debug.DrawRay(Pos_Tail.position, Coordinate.Back * offset, Color.red);
+
+        //? 물고기 가로길이 확인용 / 이 선이 물고기의 배면에 닿아야함(혹은 배지느러미)
+        Debug.DrawRay(Pos_Tail.position, Coordinate.Front * Size, Color.blue);
+        //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
+        Debug.DrawRay(Pos_Tail.position, Coordinate.Up * (Size / 2), Color.white);
+    }
+    void CollisionInteract()
+    {
+        Debug.DrawRay(Pos_Head.transform.position, ranDir.normalized * InteractRadius, Color.blue);
+        Debug.DrawRay(Pos_Head.transform.position, transform.right * InteractRadius, Color.green);
+    }
+    #endregion
 
     #region Player Ability
     protected override void AbilityStart()
@@ -89,39 +130,19 @@ public class Anchovy : Fish
     }
     #endregion
 
-    protected override void VirtualFixedUpdate()
-    {
-        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
-    }
-    protected override void PlayerableUpdate()
-    {
-        base.PlayerableUpdate();
-    }
 
-    protected override void FixedUpdate_NonPlayerable()
-    {
-        //_ego = test.egoWeight;
-        //_cohesion = test.cohesionWeight;
-        //_alignment = test.alignmentWeight;
-        //_separation = test.separationWeight;
 
-        CollisionInteract();
 
-        base.FixedUpdate_NonPlayerable();
-    }
-
-    void CollisionInteract()
-    {
-        Debug.DrawRay(transform.position, ranDir.normalized * 1);
-        Debug.DrawRay(transform.position, transform.right * 1, Color.blue);
-    }
 
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)
         {
-            Gizmos.DrawWireSphere(transform.position, _flockRadius);
-            Gizmos.DrawWireSphere(transform.position, _predatorRadius);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, FlockRadius);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }
     }
 

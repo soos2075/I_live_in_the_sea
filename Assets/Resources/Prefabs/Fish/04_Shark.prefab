@@ -139,6 +139,7 @@ MonoBehaviour:
   _rotaSpeed: 3
   _forceNormal: 1000
   _forceWeak: 100
+  _interactRadius: 1
   _ego: 1
   _cohesion: 0
   _alignment: 0
@@ -162,7 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eatingDistance: 1
   preyList:
   - Fish_Large
   - Fish_Middle

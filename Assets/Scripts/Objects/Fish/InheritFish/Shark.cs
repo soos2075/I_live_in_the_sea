@@ -5,12 +5,13 @@ using UnityEngine;
 public class Shark : Fish
 {
     [Space(10)]
-    [Header("Stat Settings")]
+    [Header("Default Settings")]
     public float _size;
     public float _moveSpeed;
     public float _rotaSpeed;
     public float _forceNormal;
     public float _forceWeak;
+    public float _interactRadius;
 
     [Space(10)]
     [Header("Weight Settings")]
@@ -29,11 +30,20 @@ public class Shark : Fish
     public float _predatorAngle;
     public bool showRadiusGizmos;
 
-
-
-    void Settings()
+    void Settings_Default()
     {
+        rig = GetComponent<Rigidbody>();
         Initialize_Stat(_size, _moveSpeed, _rotaSpeed, _forceNormal, _forceWeak);
+
+        FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
+        PredatorLayer = GetComponent<Prey>().predatorLayer;
+        PreyLayer = GetComponent<Predator>().preyLayer;
+
+        InteractRadius = _interactRadius;
+    }
+
+    void Settings_AI()
+    {
         Initialize_Weight(_cohesion, _alignment, _separation, _ego, _leader);
 
         RandomResetCount = _randomResetCount;
@@ -41,12 +51,6 @@ public class Shark : Fish
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
         SearchAngle = _predatorAngle;
-
-        FlockLayer = LayerMask.GetMask("Predator_Large");
-        PredatorLayer = GetComponent<Prey>().predatorLayer;
-        PreyLayer = GetComponent<Predator>().preyLayer;
-        //PreyLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
-        //PredatorLayer = 0;
 
         //SetBoundary();
     }
@@ -59,10 +63,7 @@ public class Shark : Fish
 
     protected override void Initialize()
     {
-        Settings();
-
-        rig = GetComponent<Rigidbody>();
-
+        Settings_Default();
 
         if (playerable == Playerable.Player)
         {
@@ -70,38 +71,26 @@ public class Shark : Fish
         }
         else
         {
-
+            Settings_AI();
         }
-
-        GetPos();
     }
 
-    Transform pos_Tail;
-    Transform pos_Head;
-    void GetPos()
+    protected override void VirtualFixedUpdate()
     {
-        pos_Tail = transform.GetChild(0).GetChild(0);
-        pos_Head = transform.GetChild(0).GetChild(1);
+        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
     }
-    protected void SizeCheck()
+
+    protected override void PlayerableUpdate()
     {
-        Ray back = new Ray(pos_Tail.position, Coordinate.Back);
-        Ray bottom = new Ray(pos_Tail.position, Coordinate.Down);
-
-        float offset = 0.2f;
-
-        //? 꼬리에서 아래쪽을 향하는 벡터
-        Debug.DrawRay(pos_Tail.position, Coordinate.Down * offset, Color.green);
-        //? 꼬리에서 반대쪽방향을 향하는 벡터
-        Debug.DrawRay(pos_Tail.position, Coordinate.Back * offset, Color.red);
-
-        //? 물고기 가로길이 확인용 / 이 선이 물고기의 배면에 닿아야함(혹은 배지느러미)
-        Debug.DrawRay(pos_Tail.position, Coordinate.Front * 20, Color.blue);
-        //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
-        Debug.DrawRay(pos_Tail.position, Coordinate.Up * 10, Color.white);
+        base.PlayerableUpdate();
+    }
+    protected override void FixedUpdate_NonPlayerable()
+    {
+        base.FixedUpdate_NonPlayerable();
     }
 
 
+    
     #region Player Ability
     protected override void AbilityStart()
     {
@@ -116,28 +105,15 @@ public class Shark : Fish
     #endregion
 
 
-    protected override void VirtualFixedUpdate()
-    {
-        SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
-    }
-
-    protected override void PlayerableUpdate()
-    {
-        base.PlayerableUpdate();
-        SizeCheck();
-    }
-    protected override void FixedUpdate_NonPlayerable()
-    {
-        base.FixedUpdate_NonPlayerable();
-    }
-
-
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)
         {
-            Gizmos.DrawWireSphere(transform.position, _flockRadius);
-            Gizmos.DrawWireSphere(transform.position, _predatorRadius);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, FlockRadius);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }
     }
 }

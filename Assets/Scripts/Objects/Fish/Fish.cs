@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Predator), typeof(Prey))]
 public class Fish : MonoBehaviour
 {
-    //? 기본스탯
+    #region 기본스탯
     public float Size { get; set; }      //? 물고기의 크기
 
     public float MoveSpeed { get; set; } //? PlayerStat - 이동속도
@@ -13,26 +13,27 @@ public class Fish : MonoBehaviour
 
     public float ForceNormal { get; set; } = 100;  //? 기본 힘 전달량
     public float ForceWeak { get; set; } = 10;     //? 특수상황 (물밖에 나갔거나 혹은 디버프)
-  
+    #endregion
 
-    //? 플레이어블
+    #region 플레이어블 선택
     public enum Playerable
     {
         Neutrality, //? 중립
         Player,     //? 플레이어캐릭터 일때만, 지정은 PlayerController에서 해주고 이외에는 기본적으로 모두 중립인 상태.
         Hostile,    //? 적대적 - 보스같은게 있으면 쓰면 좋은데 아니면 삭제해도 무방
     }
+    #endregion
 
-    //? 현재상태 - 단체활동중인거랑은 별개의 개별상태임. 일단은 모든 개체가 잠재적 군체라고 가정하는게 좋을듯. 물론 분리수치가 높으면 떨어져나갈수도있고..
+    #region State
     public enum State
     {
         Non,
         Wander,
         Sleep,
         Activity,
-        Food,
+        SlowFood,
 
-        Chasing,
+        FastFood,
         Runaway,
 
         Attack,
@@ -58,10 +59,10 @@ public class Fish : MonoBehaviour
                 case State.Activity:
                     currentSpeed = ranSpd * 1.0f;
                     break;
-                case State.Food:
-                    currentSpeed = ranSpd * 1.0f;
+                case State.SlowFood:
+                    currentSpeed = ranSpd * 0.8f;
                     break;
-                case State.Chasing:
+                case State.FastFood:
                     currentSpeed = MoveSpeed;
                     break;
                 case State.Runaway:
@@ -76,7 +77,65 @@ public class Fish : MonoBehaviour
         } 
     }
 
+    public int HungerGage = 100;
+    public int ActivityGage = 100;
+    private float hungerCount;
+    private float activityCount;
+    void StateCheck()
+    {
+        if (predator.Count > 0)
+        {
+            if (StateFish == State.Runaway) return;
+            StateFish = State.Runaway;
+        }
+        else if (HungerGage < 90 && food.Count > 3)
+        {
+            if (StateFish == State.SlowFood) return;
+            StateFish = State.SlowFood;
+        }
+        else if(HungerGage <= 30)
+        {
+            if (StateFish == State.FastFood) return;
+            StateFish = State.FastFood;
+        }
+        else if (ActivityGage > 30 && neighbours.Count > FlockCount * 0.5f)
+        {
+            if (StateFish == State.Activity) return;
+            StateFish = State.Activity;
+        }
+        else if (ActivityGage <= 30)
+        {
+            if (StateFish == State.Sleep) return;
+            StateFish = State.Sleep;
+        }
+        else
+        {
+            if (StateFish == State.Wander) return;
+            StateFish = State.Wander;
+        }
+    }
 
+    void Hunger()
+    {
+        hungerCount += Time.deltaTime;
+        if (hungerCount > 5)
+        {
+            hungerCount = 0;
+            HungerGage--;
+        }
+    }
+    void Activity()
+    {
+        activityCount += Time.deltaTime;
+        if (activityCount > 5)
+        {
+            activityCount = 0;
+            ActivityGage--;
+        }
+    }
+    #endregion
+
+    #region 좌표계통일
     public struct CoordinateUnification
     {
         public Vector3 Front;
@@ -94,10 +153,16 @@ public class Fish : MonoBehaviour
         Coordinate.Up = up;
         Coordinate.Down = down;
     }
+    #endregion
 
+    public Transform Pos_Head { get; set; }
+    public Transform Pos_Tail { get; set; }
 
     void Start()
     {
+        Pos_Head = transform.GetChild(0).GetChild(1);
+        Pos_Tail = transform.GetChild(0).GetChild(0);
+
         Initialize();
         forward = Coordinate.Front.normalized;
 
@@ -187,60 +252,6 @@ public class Fish : MonoBehaviour
         RecoveryGage();
     }
 
-    #region StateCheck
-    public int HungerGage = 100;
-    public int ActivityGage = 100;
-    private float hungerCount;
-    private float activityCount;
-    void StateCheck()
-    {
-        if (predator.Count > 0)
-        {
-            if (StateFish == State.Runaway) return;
-            StateFish = State.Runaway;
-        }
-        else if (HungerGage < 90 && HungerGage < 30 || food.Count > 3)
-        {
-            if (StateFish == State.Food) return;
-            StateFish = State.Food;
-        }
-        else if (ActivityGage > 30 && neighbours.Count > FlockCount * 0.5f)
-        {
-            if (StateFish == State.Activity) return;
-            StateFish = State.Activity;
-        }
-        else if (ActivityGage <= 30)
-        {
-            if (StateFish == State.Sleep) return;
-            StateFish = State.Sleep;
-        }
-        else
-        {
-            if (StateFish == State.Wander) return;
-            StateFish = State.Wander;
-        }
-    }
-
-    void Hunger()
-    {
-        hungerCount += Time.deltaTime;
-        if (hungerCount > 5)
-        {
-            hungerCount = 0;
-            HungerGage--;
-        }
-    }
-    void Activity()
-    {
-        activityCount += Time.deltaTime;
-        if (activityCount > 5)
-        {
-            activityCount = 0;
-            ActivityGage--;
-        }
-    }
-    #endregion
-
     protected virtual void FixedUpdate_NonPlayerable()
     {
         Hunger();
@@ -250,7 +261,7 @@ public class Fish : MonoBehaviour
         Vector3 alignment = CalculateAlignmentVector() * Weight_Alignment;
         Vector3 separation = CalculateSeparationVector() * Weight_Separation;
         Vector3 leader = CalculateLeaderVector() * Weight_Leader;
-        Vector3 food = CalculateFood() * 2;
+        Vector3 food = CalculateFood();
         Vector3 predator = CalculatePredator() * 10;
         AvodeGround();
         StayBoundary();
@@ -258,7 +269,7 @@ public class Fish : MonoBehaviour
         switch (StateFish)
         {
             case State.Wander:
-                currentDir = (ego * 1.5f) + cohesion + alignment + separation + food ;
+                currentDir = (ego * 1.5f) + cohesion + alignment + separation + (food * 0.5f) ;
                 break;
 
             case State.Sleep:
@@ -270,11 +281,12 @@ public class Fish : MonoBehaviour
                 currentDir = (ego * 0.5f) + cohesion + alignment + separation + (leader * 2);
                 break;
 
-            case State.Food:
-                currentDir = food;
+            case State.SlowFood:
+                currentDir = (ego * 0.5f) + (separation * 2.5f) + (food * 2.5f);
                 break;
 
-            case State.Chasing:
+            case State.FastFood:
+                currentDir = (ego * 0.5f) + (separation * 2.5f) + (food * 2.5f);
                 Activity();
                 break;
 
@@ -405,8 +417,10 @@ public class Fish : MonoBehaviour
 
     protected int FlockLayer { get; set; }
     public int PreyLayer { get; protected set; }
-    protected int PredatorLayer { get; set; }
+    public int PredatorLayer { get; protected set; }
     protected int BoundaryLayer { get; set; }
+
+    public float InteractRadius { get; set; }
     #endregion
 
 
@@ -416,7 +430,6 @@ public class Fish : MonoBehaviour
         Vector3 cohesionVec = Vector3.zero;
         if (neighbours.Count > 1)
         {
-            // 이웃 unit들의 위치 더하기
             for (int i = 0; i < neighbours.Count; i++)
             {
                 cohesionVec += neighbours[i].transform.position;
@@ -424,26 +437,24 @@ public class Fish : MonoBehaviour
         }
         else
         {
-            // 이웃이 없으면 vector3.zero 반환
             return cohesionVec;
         }
 
-        // 중심 위치로의 벡터 찾기
         cohesionVec /= neighbours.Count;
         cohesionVec -= transform.position;
         cohesionVec.Normalize();
         return cohesionVec;
     }
 
-    //? 정렬 - Alignment,
+    //? 정렬 - Alignment (1. 방향 동화 2. 방향 유지)
     protected Vector3 CalculateAlignmentVector()
     {
         Vector3 alignmentVec = Vector3.zero;
         if (neighbours.Count > 1)
         {
             //? 가야하는 방향과 그냥 오브젝트 기준 정면방향 두가지 방법이 있음
-            //? 전자는 단체회전이 잦음. 대신 에어리어를 잘지키고 확 방향전환을 순간가속을 함.
-            //? 후자는 단체이동중 에어리어를 벗어나도 꽤나 전진하는 모습. 추가로 정렬수치가 높으면 땅에 단체로 처박는 현상발생.
+            //? 1. 동화 - 단체회전이 잦음. 대신 에어리어를 잘지키고 확 방향전환을 순간가속을 함.
+            //? 2. 유지 - 단체이동중 에어리어를 벗어나도 꽤나 전진하는 모습. 추가로 정렬수치가 높으면 땅에 단체로 처박는 현상발생.
             for (int i = 0; i < neighbours.Count; i++)
             {
                 //alignmentVec += neighbours[i].currentDir;
@@ -527,12 +538,14 @@ public class Fish : MonoBehaviour
         Vector3 vec = Vector3.zero;
         if (food.Count > 0)
         {
-            vec += food[0].transform.position - transform.position;
             for (int i = 0; i < food.Count; i++)
             {
-                if (vec.magnitude > (food[i].transform.position - transform.position).magnitude)
+                vec += food[i].transform.position;
+                //? 만약 먹이가 움직이지 않는 산호와 같은 종류라면
+                if (food[i].GetComponent<Fish>() == null)
                 {
-                    vec += food[i].transform.position - transform.position;
+                    Vector3 targetVec = food[i].transform.position - transform.position;
+                    return targetVec.normalized;
                 }
             }
         }
@@ -540,6 +553,9 @@ public class Fish : MonoBehaviour
         {
             return vec;
         }
+
+        vec /= food.Count;
+        vec -= transform.position;
         vec.Normalize();
         return vec;
     }
@@ -564,14 +580,25 @@ public class Fish : MonoBehaviour
     protected void AvodeGround()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Coordinate.Front, out hit, 1, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, InteractRadius, LayerMask.GetMask("Ground")))
         {
-            ranDir = new Vector3(hit.normal.x, hit.normal.y, 0);
-            rig.AddForce(ranDir.normalized * Time.deltaTime * MoveSpeed * ForceNormal * 10);
+            //ranDir = new Vector3(hit.normal.x, hit.normal.y, 0);
+            //rig.AddForce(ranDir.normalized * Time.deltaTime * ForceNormal * MoveSpeed * 10);
+            ranDir = Vector3.Reflect(Coordinate.Front, hit.normal);
+            rig.AddForce(ranDir.normalized * Time.deltaTime * 20, ForceMode.VelocityChange);
         }
-        else if (Physics.Raycast(transform.position, Coordinate.Front, out hit, 1, LayerMask.GetMask("Water")))
+
+        if (Physics.Raycast(transform.position, Coordinate.Front, out hit, InteractRadius, LayerMask.GetMask("Water")))
         {
-            ranDir = new Vector3(Coordinate.Front.x, Coordinate.Back.y, 0);
+            ranDir = Vector3.Reflect(Coordinate.Front, hit.normal);
+        }
+
+        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, (InteractRadius * 0.25f), LayerMask.GetMask("Phytoplankton")))
+        {
+            if (rig.mass <= hit.collider.gameObject.GetComponentOrParent<Rigidbody>().mass * 3)
+            {
+                rig.AddForce(Coordinate.Back * Time.deltaTime * ForceNormal * 2, ForceMode.Impulse);
+            }
         }
     }
 
@@ -622,7 +649,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, FlockRadius, FlockLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            neighbours.Add(colls[i].GetComponentInParent<Fish>());
+            neighbours.Add(colls[i].gameObject.GetComponentOrParent<Fish>());
             if (i > FlockCount)
             {
                 break;
@@ -640,7 +667,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, PreyLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            food.Add(colls[i].GetComponentInParent<Prey>());
+            food.Add(colls[i].gameObject.GetComponentOrParent<Prey>());
             if (i > 5)
             {
                 break;
@@ -658,7 +685,7 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, SearchRadius, PredatorLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            predator.Add(colls[i].GetComponentInParent<Predator>());
+            predator.Add(colls[i].gameObject.GetComponentOrParent<Predator>());
             if (i > 1)
             {
                 break;

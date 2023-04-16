@@ -9,8 +9,8 @@ public class Poolable : MonoBehaviour
         
     }
 
-    void Update()
-    {
+    //void Update()
+    //{
         
-    }
+    //}
 }

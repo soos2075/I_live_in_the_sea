@@ -5,12 +5,13 @@ using UnityEngine;
 public class SharkWhite : Fish
 {
     [Space(10)]
-    [Header("Stat Settings")]
+    [Header("Default Settings")]
     public float _size;
     public float _moveSpeed;
     public float _rotaSpeed;
     public float _forceNormal;
     public float _forceWeak;
+    public float _interactRadius;
 
     [Space(10)]
     [Header("Weight Settings")]
@@ -31,9 +32,20 @@ public class SharkWhite : Fish
 
 
 
-    void Settings()
+    void Settings_Default()
     {
+        rig = GetComponent<Rigidbody>();
         Initialize_Stat(_size, _moveSpeed, _rotaSpeed, _forceNormal, _forceWeak);
+
+        FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
+        PredatorLayer = GetComponent<Prey>().predatorLayer;
+        PreyLayer = GetComponent<Predator>().preyLayer;
+
+        InteractRadius = _interactRadius;
+    }
+
+    void Settings_AI()
+    {
         Initialize_Weight(_cohesion, _alignment, _separation, _ego, _leader);
 
         RandomResetCount = _randomResetCount;
@@ -42,9 +54,6 @@ public class SharkWhite : Fish
         SearchRadius = _predatorRadius;
         SearchAngle = _predatorAngle;
 
-        FlockLayer = LayerMask.GetMask("Predator_Large");
-        PredatorLayer = GetComponent<Prey>().predatorLayer;
-        PreyLayer = GetComponent<Predator>().preyLayer;
         //SetBoundary();
     }
     void SetBoundary()
@@ -56,20 +65,16 @@ public class SharkWhite : Fish
 
     protected override void Initialize()
     {
-        Settings();
-
-        rig = GetComponent<Rigidbody>();
-
+        Settings_Default();
 
         if (playerable == Playerable.Player)
         {
-            //Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
+            Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
         }
         else
         {
-
+            Settings_AI();
         }
-        //GetPos();
     }
 
     protected override void VirtualFixedUpdate()
@@ -88,36 +93,6 @@ public class SharkWhite : Fish
     }
 
 
-
-    #region 사이즈 체크할 때 쓰는곳
-    Transform pos_Tail;
-    Transform pos_Head;
-    void GetPos()
-    {
-        pos_Tail = transform.GetChild(0).GetChild(0);
-        pos_Head = transform.GetChild(0).GetChild(1);
-    }
-
-
-    protected void SizeCheck()
-    {
-        Ray back = new Ray(pos_Tail.position, Coordinate.Back);
-        Ray bottom = new Ray(pos_Tail.position, Coordinate.Down);
-
-        float offset = 0.2f;
-
-        //? 꼬리에서 아래쪽을 향하는 벡터
-        Debug.DrawRay(pos_Tail.position, Coordinate.Down * offset, Color.green);
-        //? 꼬리에서 반대쪽방향을 향하는 벡터
-        Debug.DrawRay(pos_Tail.position, Coordinate.Back * offset, Color.red);
-
-        //? 물고기 가로길이 확인용 / 이 선이 물고기의 배면에 닿아야함(혹은 배지느러미)
-        Debug.DrawRay(pos_Tail.position, Coordinate.Front * 20, Color.blue);
-        //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
-        Debug.DrawRay(pos_Tail.position, Coordinate.Up * 10, Color.white);
-    }
-    #endregion
-
     #region Player Ability
     protected override void AbilityStart()
     {
@@ -130,9 +105,6 @@ public class SharkWhite : Fish
         MoveSpeed = 5;
     }
     #endregion
-
-
-
 
 
     private void OnDrawGizmos()

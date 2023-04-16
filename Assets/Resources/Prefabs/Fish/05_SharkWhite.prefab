@@ -93,7 +93,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eatingDistance: 1
   preyList:
   - Fish_Large
   - Fish_Middle
@@ -140,9 +139,10 @@ MonoBehaviour:
   abilityGageMax: 0
   _size: 10
   _moveSpeed: 12
-  _rotaSpeed: 4
+  _rotaSpeed: 2.5
   _forceNormal: 1000
   _forceWeak: 100
+  _interactRadius: 1
   _ego: 1
   _cohesion: 0
   _alignment: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   _flockRadius: 10
   _predatorRadius: 15
   _predatorAngle: 0
-  showRadiusGizmos: 1
+  showRadiusGizmos: 0
 --- !u!1 &2075062091927951501
 GameObject:
   m_ObjectHideFlags: 0
