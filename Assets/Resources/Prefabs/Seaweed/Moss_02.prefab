@@ -188,4 +188,4 @@ MonoBehaviour:
   maximumPreyCount: 5
   currentPreyCount: 0
   preyArray: []
-  preyObj: {fileID: 467229720302441538, guid: 418f65b45fd884a4286670aa5c48ec22, type: 3}
+  preyObj: {fileID: 2244939714520859770, guid: 418f65b45fd884a4286670aa5c48ec22, type: 3}

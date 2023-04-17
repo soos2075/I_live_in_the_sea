@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CoralArea_A
+  - KelpArea_A
   layers:
   - Default
   - TransparentFX
@@ -20,15 +22,15 @@ TagManager:
   - BackgroundObject
   - 
   - 
-  - BoidsTest
+  - Area_Surface
+  - Area_Land
+  - Area_Seaweed
+  - Area_Rock
+  - Area_Sand
+  - Area_Nothing
   - 
   - 
-  - Boundary
-  - 
-  - 
-  - 
-  - 
-  - 
+  - ApexPredator
   - Predator_Large
   - Predator_Middle
   - Predator_Small

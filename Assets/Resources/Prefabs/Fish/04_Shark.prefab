@@ -134,7 +134,7 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 10
+  _size: 0
   _moveSpeed: 10
   _rotaSpeed: 3
   _forceNormal: 1000
@@ -167,6 +167,7 @@ MonoBehaviour:
   - Fish_Large
   - Fish_Middle
   - Fish_Small
+  showInteractRadius: 0
 --- !u!114 &7478094646902627145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +213,7 @@ Transform:
   m_GameObject: {fileID: 5751234321089732003}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4009646123671807407}
   - {fileID: 4009646122656190444}

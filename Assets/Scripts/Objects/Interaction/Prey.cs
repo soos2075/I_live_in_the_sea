@@ -23,7 +23,7 @@ public class Prey : MonoBehaviour
     {
         if (isFade)
         {
-            mat = GetComponent<MeshRenderer>().material;
+            mat = gameObject.GetComponentOrChild<MeshRenderer>().material;
         }
         currentHP = maxHp;
     }

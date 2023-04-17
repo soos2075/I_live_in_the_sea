@@ -155,6 +155,12 @@ public class Fish : MonoBehaviour
     }
     #endregion
 
+    #region Boundary설정
+
+    protected List<string> boundaryTagList;
+
+    #endregion
+
     public Transform Pos_Head { get; set; }
     public Transform Pos_Tail { get; set; }
 
@@ -180,6 +186,7 @@ public class Fish : MonoBehaviour
             findNeighbourCoroutine = StartCoroutine(FindNeighbourCoroutine());
             searchPredatorCoroutine = StartCoroutine(SearchPredatorCoroutine());
             searchFoodCoroutine = StartCoroutine(SearchFoodCoroutine());
+            StayBoundary();
         }
     }
 
@@ -264,7 +271,6 @@ public class Fish : MonoBehaviour
         Vector3 food = CalculateFood();
         Vector3 predator = CalculatePredator() * 10;
         AvodeGround();
-        StayBoundary();
 
         switch (StateFish)
         {
@@ -418,7 +424,7 @@ public class Fish : MonoBehaviour
     protected int FlockLayer { get; set; }
     public int PreyLayer { get; protected set; }
     public int PredatorLayer { get; protected set; }
-    protected int BoundaryLayer { get; set; }
+    protected int AreaLayer { get; set; }
 
     public float InteractRadius { get; set; }
     #endregion
@@ -608,11 +614,7 @@ public class Fish : MonoBehaviour
     {
         if (boundaryData != null)
         {
-            if (!Physics.CheckSphere(transform.position, Size, BoundaryLayer))
-            {
-                float offset = boundaryData.radius * 0.5f;
-                ranDir = (boundaryData.pos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
-            }
+            returnBoundary = StartCoroutine(ReturnBoundary());
         }
     }
 
@@ -704,6 +706,22 @@ public class Fish : MonoBehaviour
         lastRotateCount = 0;
         randomValueCor = StartCoroutine(RandomValueRepeater());
     }
+
+    Coroutine returnBoundary;
+    //? Boundary로 돌아가기
+    IEnumerator ReturnBoundary()
+    {
+        yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
+        if (!Physics.CheckSphere(transform.position, Size, AreaLayer))
+        {
+            float offset = boundaryData.radius * 0.5f;
+            ranDir = (boundaryData.centerPos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
+        }
+        returnBoundary = StartCoroutine(ReturnBoundary());
+    }
+
+    //? 회피 - Ground / Water / Food
+
     #endregion
 
 

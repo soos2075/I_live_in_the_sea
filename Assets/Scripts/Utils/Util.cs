@@ -62,6 +62,25 @@ public class Util
         return component;
     }
 
+    public static T GetComponentOrChild<T>(GameObject go) where T : UnityEngine.Component
+    {
+        if (go == null)
+            return null;
+
+        T component = go.GetComponent<T>();
+        if (component == null)
+        {
+            component = go.GetComponentInChildren<T>();
+            if (component == null)
+            {
+                Debug.Log($"해당 컴포넌트가 존재하지 않음 {go} : {typeof(T)}");
+                return null;
+            }
+        }
+
+        return component;
+    }
+
     public static T GetOrAddComponent<T>(GameObject go) where T : UnityEngine.Component
     {
         if (go == null)

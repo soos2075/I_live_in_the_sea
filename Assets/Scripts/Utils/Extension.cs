@@ -24,6 +24,10 @@ public static class Extension
     {
         return Util.GetComponentOrParent<T>(go);
     }
+    public static T GetComponentOrChild<T>(this GameObject go) where T : UnityEngine.Component
+    {
+        return Util.GetComponentOrChild<T>(go);
+    }
 
     public static T GetOrAddComponent<T>(this GameObject go) where T : UnityEngine.Component
     {

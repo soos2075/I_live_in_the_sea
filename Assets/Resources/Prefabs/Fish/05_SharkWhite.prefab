@@ -97,6 +97,7 @@ MonoBehaviour:
   - Fish_Large
   - Fish_Middle
   - Fish_Small
+  showInteractRadius: 0
 --- !u!114 &5504455035112143705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,9 +138,9 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 10
+  _size: 0
   _moveSpeed: 12
-  _rotaSpeed: 2.5
+  _rotaSpeed: 2
   _forceNormal: 1000
   _forceWeak: 100
   _interactRadius: 1
@@ -211,7 +212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083849438285229948}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2378644716402125976}

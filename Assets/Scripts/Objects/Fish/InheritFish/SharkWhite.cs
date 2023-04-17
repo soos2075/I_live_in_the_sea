@@ -58,7 +58,7 @@ public class SharkWhite : Fish
     }
     void SetBoundary()
     {
-        BoundaryLayer = LayerMask.GetMask("Boundary");
+        AreaLayer = LayerMask.GetMask("Boundary");
         boundaryData = FindObjectOfType<Boundary>().GetBoundaryData();
     }
 

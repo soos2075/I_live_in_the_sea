@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shark : Fish
+public class MoorishIdol : Fish
 {
     [Space(10)]
     [Header("Default Settings")]
@@ -30,6 +30,8 @@ public class Shark : Fish
     public float _predatorAngle;
     public bool showRadiusGizmos;
 
+
+
     void Settings_Default()
     {
         rig = GetComponent<Rigidbody>();
@@ -38,10 +40,10 @@ public class Shark : Fish
         FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
         PredatorLayer = GetComponent<Prey>().predatorLayer;
         PreyLayer = GetComponent<Predator>().preyLayer;
+        AreaLayer = GetComponent<Area>().areaLayer;
 
         InteractRadius = _interactRadius;
     }
-
     void Settings_AI()
     {
         Initialize_Weight(_cohesion, _alignment, _separation, _ego, _leader);
@@ -51,14 +53,8 @@ public class Shark : Fish
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
         SearchAngle = _predatorAngle;
+    }
 
-        //SetBoundary();
-    }
-    void SetBoundary()
-    {
-        AreaLayer = LayerMask.GetMask("Boundary");
-        boundaryData = FindObjectOfType<Boundary>().GetBoundaryData();
-    }
 
 
     protected override void Initialize()
@@ -67,7 +63,7 @@ public class Shark : Fish
 
         if (playerable == Playerable.Player)
         {
-            Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
+            //Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
         }
         else
         {
@@ -81,11 +77,11 @@ public class Shark : Fish
         //SizeCheck();
         //CollisionInteract();
     }
-
     protected override void PlayerableUpdate()
     {
         base.PlayerableUpdate();
     }
+
     protected override void FixedUpdate_NonPlayerable()
     {
         base.FixedUpdate_NonPlayerable();
@@ -121,7 +117,6 @@ public class Shark : Fish
     }
     #endregion
 
-
     #region Player Ability
     protected override void AbilityStart()
     {
@@ -136,6 +131,9 @@ public class Shark : Fish
     #endregion
 
 
+
+
+
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)
@@ -147,4 +145,7 @@ public class Shark : Fish
             Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }
     }
+
+
+
 }

@@ -14,72 +14,111 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data:
   - fishSprite: {fileID: 21300000, guid: 636abdcc054886b49b1dbd29c12ab9b4, type: 3}
-    name: "\uBA78\uCE58"
-    moveSpeed: 5
-    size: 1
+    name_kr: "\uCCAD\uC5B4"
+    name_en: Pacific herring
+    name_scientific: Clupea pallasii
+    size_Real: 20~38cm
+    size_Min: 0
+    size_Max: 35
     prefab: {fileID: 2835128554215892342, guid: 9c00d616cb8a0464dbe7dbd8e7e739ef,
       type: 3}
-  - fishSprite: {fileID: 21300000, guid: 4fede9a84c4824347ad7fdcc1ab5eb3d, type: 3}
-    name: "\uBB3C\uACE0\uAE302"
-    moveSpeed: 0
-    size: 0
-    prefab: {fileID: 7770584863604633872, guid: 67de17aaa6711224f80123d9b1ef8cb7,
+  - fishSprite: {fileID: 21300000, guid: 81bb95135a800c44c948a77b7f16d617, type: 3}
+    name_kr: "\uAE43\uB300\uB3D4"
+    name_en: Moorish Idol
+    name_scientific: Zanclus cornutus
+    size_Real: 15~25cm
+    size_Min: 0
+    size_Max: 25
+    prefab: {fileID: 3226120907845753209, guid: e62f254afcd60f4448ab9e6eae06f141,
       type: 3}
   - fishSprite: {fileID: 21300000, guid: e9bd238c3d959f94d8e30e6427ecdb07, type: 3}
-    name: "\uBB3C\uACE0\uAE303"
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 2206852426022253465, guid: de500f6b90f89bc4c87a6585b2dea01a,
       type: 3}
   - fishSprite: {fileID: 21300000, guid: a6769b8d594f2824eb5c908d728c204e, type: 3}
-    name: "\uBB3C\uACE0\uAE304"
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 1937588542411740048, guid: a05072560c3476b4cb8dddf22f697392,
       type: 3}
   - fishSprite: {fileID: 21300000, guid: 8c404f110aef25345ac8811460525a0f, type: 3}
-    name: "\uC0C1\uC5B4"
-    moveSpeed: 10
-    size: 20
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 20
     prefab: {fileID: 5622364518096617177, guid: 632ae6e5796dfa04ebc225384c870005,
       type: 3}
   - fishSprite: {fileID: 21300000, guid: 0c411e74b7dc78f40b51db7598522507, type: 3}
-    name: "\uBC31\uC0C1\uC544\uB9AC"
-    moveSpeed: 12
-    size: 10
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 10
+    size_Max: 90
     prefab: {fileID: 144691863251165877, guid: 6337156bee9c57a459f4c03f3205125b, type: 3}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}
   - fishSprite: {fileID: 0}
-    name: 
-    moveSpeed: 0
-    size: 0
+    name_kr: 
+    name_en: 
+    name_scientific: 
+    size_Real: 
+    size_Min: 0
+    size_Max: 0
     prefab: {fileID: 0}

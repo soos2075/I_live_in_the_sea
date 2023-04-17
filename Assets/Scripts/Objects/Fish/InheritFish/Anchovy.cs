@@ -57,7 +57,7 @@ public class Anchovy : Fish
     }
     void SetBoundary()
     {
-        BoundaryLayer = LayerMask.GetMask("Boundary");
+        AreaLayer = LayerMask.GetMask("Boundary");
         boundaryData = FindObjectOfType<Boundary>().GetBoundaryData();
     }
 
@@ -79,6 +79,8 @@ public class Anchovy : Fish
     protected override void VirtualFixedUpdate()
     {
         SetCoordinate(transform.right, -transform.right, transform.up, -transform.up);
+        //SizeCheck();
+        //CollisionInteract();
     }
     protected override void PlayerableUpdate()
     {
@@ -88,12 +90,10 @@ public class Anchovy : Fish
     protected override void FixedUpdate_NonPlayerable()
     {
         base.FixedUpdate_NonPlayerable();
-        //SizeCheck();
-        //CollisionInteract();
     }
 
     #region DebugRay - 전방확인 - 향하는 방향, 가려고 하는 방향 / 후방확인 - 꼬리 아래 지형체크, 전체 사이즈 체크
-    void SizeCheck()
+    void SizeCheck() //? 사이즈 체크
     {
         Ray back = new Ray(Pos_Tail.position, Coordinate.Back);
         Ray bottom = new Ray(Pos_Tail.position, Coordinate.Down);
@@ -108,9 +108,14 @@ public class Anchovy : Fish
         //? 물고기 가로길이 확인용 / 이 선이 물고기의 배면에 닿아야함(혹은 배지느러미)
         Debug.DrawRay(Pos_Tail.position, Coordinate.Front * Size, Color.blue);
         //? 물고기 세로길이 확인용 선 / 이 선이 물고기의 꼬리끝에 닿아야함
-        Debug.DrawRay(Pos_Tail.position, Coordinate.Up * (Size / 2), Color.white);
+        Debug.DrawRay(Pos_Tail.position, Coordinate.Up * (Size), Color.white);
+
+        //? 체장 확인
+        Ray body = new Ray(Pos_Head.position, Coordinate.Back);
+        float length = (Pos_Head.position.x - Pos_Tail.position.x);
+        Debug.DrawRay(Pos_Head.position, Coordinate.Back * length, Color.black);
     }
-    void CollisionInteract()
+    void CollisionInteract() //? 방향체크
     {
         Debug.DrawRay(Pos_Head.transform.position, ranDir.normalized * InteractRadius, Color.blue);
         Debug.DrawRay(Pos_Head.transform.position, transform.right * InteractRadius, Color.green);

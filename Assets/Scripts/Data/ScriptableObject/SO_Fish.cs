@@ -11,9 +11,15 @@ public class SO_Fish : ScriptableObject
     public class FishData
     {
         public Sprite fishSprite;
-        public string name;
-        public float moveSpeed;
-        public int size;
+        public string name_kr;
+        public string name_en;
+        public string name_scientific;
+
+        public string size_Real;
+        public int size_Min;
+        public int size_Max;
+
+        //public float moveSpeed;
 
         public GameObject prefab;
     }
@@ -121,11 +127,18 @@ public class GuiTest : Editor
 
         value._data[index].fishSprite = (Sprite)EditorGUILayout.ObjectField("이미지", value._data[index].fishSprite, typeof(Sprite), true
             , GUILayout.MinWidth(250), GUILayout.MinHeight(250));
-        value._data[index].name = (string)EditorGUILayout.TextField("이름", value._data[index].name);
+        value._data[index].name_kr = (string)EditorGUILayout.TextField("한국이름", value._data[index].name_kr);
+        value._data[index].name_en = (string)EditorGUILayout.TextField("영문이름", value._data[index].name_en);
+        value._data[index].name_scientific = (string)EditorGUILayout.TextField("학명", value._data[index].name_scientific);
         //value.contents = (string)EditorGUILayout.TextArea(value.contents, GUILayout.MinHeight(50), GUILayout.MinWidth(100));
 
-        value._data[index].moveSpeed = (float)EditorGUILayout.FloatField("속도", value._data[index].moveSpeed);
-        value._data[index].size = (int)EditorGUILayout.IntField("크기", value._data[index].size);
+        value._data[index].size_Real = (string)EditorGUILayout.TextField("실제크기", value._data[index].size_Real);
+
+        value._data[index].size_Min = (int)EditorGUILayout.IntField("최소크기", value._data[index].size_Min);
+        value._data[index].size_Max = (int)EditorGUILayout.IntField("최대크기", value._data[index].size_Max);
+
+
+        //value._data[index].moveSpeed = (float)EditorGUILayout.FloatField("속도", value._data[index].moveSpeed);
 
         value._data[index].prefab = (GameObject)EditorGUILayout.ObjectField("프리팹", value._data[index].prefab, typeof(GameObject), true);
 
