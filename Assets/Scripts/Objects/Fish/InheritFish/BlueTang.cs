@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Anchovy : Fish
+public class BlueTang : Fish
 {
     [Space(10)]
     [Header("Default Settings")]
-    public float _size;
-    public float _moveSpeed;
-    public float _rotaSpeed;
-    public float _forceNormal;
-    public float _forceWeak;
-    public float _interactRadius;
+    public float _size = 10;
+    public float _moveSpeed = 5;
+    public float _rotaSpeed = 5;
+    public float _forceNormal = 100;
+    public float _forceWeak = 10;
+    public float _interactRadius = 0.25f;
 
     [Space(10)]
     [Header("Weight Settings")]
-    [Range(0, 5)] public float _ego;
+    [Range(0, 5)] public float _ego = 1;
     [Range(0, 5)] public float _cohesion;
     [Range(0, 5)] public float _alignment;
     [Range(0, 5)] public float _separation;
@@ -23,11 +23,11 @@ public class Anchovy : Fish
 
     [Space(10)]
     [Header("Etc Settings")]
-    public float _randomResetCount;
+    public float _randomResetCount = 10;
     public int _flockCount;
     public float _flockRadius;
-    public float _predatorRadius;
-    public float _FOV;
+    public float _predatorRadius = 5;
+    public float _predatorAngle = 60;
     public bool showRadiusGizmos;
 
 
@@ -52,9 +52,10 @@ public class Anchovy : Fish
         FlockCount = _flockCount;
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
-        SearchFOV = _FOV;
-
+        SearchFOV = _predatorAngle;
     }
+
+
 
     protected override void Initialize()
     {
@@ -62,7 +63,7 @@ public class Anchovy : Fish
 
         if (playerable == Playerable.Player)
         {
-            Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
+            //Initialize_Ability(abilityType.Keep, 120, 4, 0.4f);
         }
         else
         {
@@ -144,7 +145,4 @@ public class Anchovy : Fish
             Gizmos.DrawWireSphere(transform.position, SearchRadius);
         }
     }
-
-
-
 }

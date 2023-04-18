@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2378644716402125976}
   m_Layer: 24
-  m_Name: pos_tail (1)
+  m_Name: Pos_Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,9 +40,10 @@ GameObject:
   m_Component:
   - component: {fileID: 669308836628789263}
   - component: {fileID: 8380529450933464658}
+  - component: {fileID: 5128061748497959808}
   - component: {fileID: 3306513108657677277}
   - component: {fileID: 5504455035112143705}
-  - component: {fileID: 5128061748497959808}
+  - component: {fileID: -7676148853094056179}
   m_Layer: 24
   m_Name: 05_SharkWhite
   m_TagString: Untagged
@@ -81,40 +82,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &3306513108657677277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144691863251165877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  preyList:
-  - Fish_Large
-  - Fish_Middle
-  - Fish_Small
-  showInteractRadius: 0
---- !u!114 &5504455035112143705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144691863251165877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557abfaa91909d8489842eb991656858, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHP: 0
-  maxHp: 10000
-  predatorList: []
-  isFade: 0
-  mat: {fileID: 0}
 --- !u!114 &5128061748497959808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +122,56 @@ MonoBehaviour:
   _predatorRadius: 15
   _predatorAngle: 0
   showRadiusGizmos: 0
+--- !u!114 &3306513108657677277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144691863251165877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preyList:
+  - Fish_Large
+  - Fish_Middle
+  - Fish_Small
+  showInteractRadius: 0
+--- !u!114 &5504455035112143705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144691863251165877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557abfaa91909d8489842eb991656858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  maxHp: 10000
+  predatorList: []
+  isFade: 0
+  mat: {fileID: 0}
+--- !u!114 &-7676148853094056179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144691863251165877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b59f682692d0c46b991790f2c12d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  areaList:
+  - Area_Surface
+  - Area_Sand
+  - Area_Nothing
 --- !u!1 &2075062091927951501
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5201155410643498043}
   m_Layer: 24
-  m_Name: pos_head (1)
+  m_Name: Pos_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,6 +234,7 @@ Transform:
   m_Children:
   - {fileID: 2378644716402125976}
   - {fileID: 5201155410643498043}
+  - {fileID: 6284680333766285051}
   m_Father: {fileID: 669308836628789263}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
@@ -281,3 +299,33 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4450340256241132190, guid: f21bfc71adbd4cc41aab013b06560499, type: 3}
+--- !u!1 &5438904130187768704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6284680333766285051}
+  m_Layer: 24
+  m_Name: Pos_Gravity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6284680333766285051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438904130187768704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.3, z: -0.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7898606954221607509}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

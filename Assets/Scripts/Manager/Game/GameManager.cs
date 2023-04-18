@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,13 +40,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        int lay1 = LayerMask.NameToLayer("Area_Surface") | LayerMask.NameToLayer("Area_Seaweed") | LayerMask.NameToLayer("Area_Coral");
-
-        Debug.Log($"1 : {LayerMask.NameToLayer("Area_Surface")} //// {LayerMask.GetMask("Area_Surface")}");
-
-        Debug.Log($"2 : {LayerMask.LayerToName(lay1 & LayerMask.NameToLayer("Area_Nothing"))}");
-
-        //Debug.Log($"3 : {LayerMask.LayerToName(lay1 ^ 15)}");
 
     }
 

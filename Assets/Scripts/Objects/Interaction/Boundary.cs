@@ -11,14 +11,6 @@ public class Boundary : MonoBehaviour
         Capsule,
     }
 
-    //[SerializeField] BoundaryType _type;
-    //[SerializeField] Vector3 _Centerpos;
-    //[SerializeField] float _radius;
-    //[SerializeField] float _xSize;
-    //[SerializeField] float _ySize;
-
-    //[SerializeField] bool _drawGizmos;
-
     public Collider col;
     Data data;
 
@@ -33,7 +25,6 @@ public class Boundary : MonoBehaviour
 
         public float height;
         public int capsuleOption;
-
 
         public Data(BoundaryType t, Vector3 pos, float r, Vector3 box_size, float _height = 0, int cap_Axis = 1)
         {
@@ -56,15 +47,15 @@ public class Boundary : MonoBehaviour
 
         if (sph)
         {
-            data = new Data(BoundaryType.Sphere, sph.center, sph.radius, Vector3.zero);
+            data = new Data(BoundaryType.Sphere, transform.position + sph.center, sph.radius, Vector3.zero);
         }
         else if(box)
         {
-            data = new Data(BoundaryType.Box, box.center, 0, box.size);
+            data = new Data(BoundaryType.Box, transform.position + box.center, box.size.x + box.size.y, box.size);
         }
         else if (cap)
         {
-            data = new Data(BoundaryType.Capsule, cap.center, cap.radius, Vector3.zero, cap.height, cap.direction);
+            data = new Data(BoundaryType.Capsule, transform.position + cap.center, cap.radius, Vector3.zero, cap.height, cap.direction);
         }
     }
     private void Start()

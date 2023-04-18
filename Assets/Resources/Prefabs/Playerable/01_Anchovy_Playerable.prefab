@@ -70,10 +70,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6214015685607558054}
   - component: {fileID: 6214015685607558055}
-  - component: {fileID: 6214015685607558056}
+  - component: {fileID: 6214015685607558059}
   - component: {fileID: 6214015685607558057}
   - component: {fileID: 6214015685607558058}
-  - component: {fileID: 6214015685607558059}
+  - component: {fileID: 233494595737299208}
+  - component: {fileID: 6214015685607558056}
   m_Layer: 29
   m_Name: 01_Anchovy_Playerable
   m_TagString: Untagged
@@ -112,56 +113,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
---- !u!114 &6214015685607558056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6214015685607558060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c27f38ab2b2ea4a8c1d0111889efbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: 0
-  addForce: 0
---- !u!114 &6214015685607558057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6214015685607558060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eatingDistance: 0.25
-  preyList:
-  - Zooplankton
-  - Phytoplankton
---- !u!114 &6214015685607558058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6214015685607558060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557abfaa91909d8489842eb991656858, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHP: 0
-  maxHp: 0
-  predatorList:
-  - Predator_Small
-  - Predator_Middle
-  - Predator_Large
-  isFade: 0
-  mat: {fileID: 0}
 --- !u!114 &6214015685607558059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +141,7 @@ MonoBehaviour:
   _rotaSpeed: 4
   _forceNormal: 100
   _forceWeak: 10
+  _interactRadius: 0.25
   _ego: 0.8
   _cohesion: 1.7
   _alignment: 1.2
@@ -199,8 +151,73 @@ MonoBehaviour:
   _flockCount: 15
   _flockRadius: 3
   _predatorRadius: 5
-  _predatorAngle: 120
+  _FOV: 0
   showRadiusGizmos: 0
+--- !u!114 &6214015685607558057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6214015685607558060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preyList:
+  - Zooplankton
+  - Phytoplankton
+  showInteractRadius: 0
+--- !u!114 &6214015685607558058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6214015685607558060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557abfaa91909d8489842eb991656858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  maxHp: 0
+  predatorList:
+  - Predator_Small
+  - Predator_Middle
+  - Predator_Large
+  isFade: 0
+  mat: {fileID: 0}
+--- !u!114 &233494595737299208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6214015685607558060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b59f682692d0c46b991790f2c12d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  areaList:
+  - Area_Surface
+--- !u!114 &6214015685607558056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6214015685607558060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c27f38ab2b2ea4a8c1d0111889efbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 0
+  addForce: 0
+  lastHorizontalInput: 0
 --- !u!1 &8659394063691305068
 GameObject:
   m_ObjectHideFlags: 0

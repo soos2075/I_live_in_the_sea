@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 373075165171366799}
   - component: {fileID: 470675272071215921}
-  - component: {fileID: 470675272071215885}
-  - component: {fileID: 470675272071215926}
   - component: {fileID: 470675272071215927}
+  - component: {fileID: 470675272071215926}
+  - component: {fileID: 470675272071215885}
   - component: {fileID: 470675272071215920}
   m_Layer: 29
   m_Name: 01_MoorishIdol
@@ -52,7 +52,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &470675272071215885
+--- !u!114 &470675272071215927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,11 +61,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 470675272071215922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b59f682692d0c46b991790f2c12d0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaList:
-  - Area_Coral
+  preyList:
+  - Zooplankton
+  - Phytoplankton
+  showInteractRadius: 0
 --- !u!114 &470675272071215926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,7 +88,7 @@ MonoBehaviour:
   - Predator_Large
   isFade: 0
   mat: {fileID: 0}
---- !u!114 &470675272071215927
+--- !u!114 &470675272071215885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,13 +97,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 470675272071215922}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
+  m_Script: {fileID: 11500000, guid: 55b59f682692d0c46b991790f2c12d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preyList:
-  - Zooplankton
-  - Phytoplankton
-  showInteractRadius: 0
+  areaList:
+  - Area_Coral
 --- !u!114 &470675272071215920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,22 +125,22 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 0
-  _moveSpeed: 3
-  _rotaSpeed: 10
+  _size: 20
+  _moveSpeed: 4
+  _rotaSpeed: 8
   _forceNormal: 100
   _forceWeak: 10
   _interactRadius: 0.25
-  _ego: 1
-  _cohesion: 0
-  _alignment: 0
-  _separation: 0
+  _ego: 2
+  _cohesion: 1
+  _alignment: 0.6
+  _separation: 1
   _leader: 0
   _randomResetCount: 20
-  _flockCount: 0
-  _flockRadius: 0
-  _predatorRadius: 0
-  _predatorAngle: 0
+  _flockCount: 5
+  _flockRadius: 5
+  _predatorRadius: 5
+  _predatorAngle: 60
   showRadiusGizmos: 0
 --- !u!1 &669058909480344538
 GameObject:
@@ -214,7 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5684817227908580032}
   - component: {fileID: 1035685486952007340}
-  - component: {fileID: 3364282431304071680}
+  - component: {fileID: 7484733381657472951}
   m_Layer: 29
   m_Name: MoorishIdol
   m_TagString: Untagged
@@ -300,8 +300,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000009094947, y: 0.00024982204, z: -0.0000036802958}
     m_Extent: {x: 0.0001514338, y: 0.0009664402, z: 0.0006971845}
   m_DirtyAABB: 0
---- !u!64 &3364282431304071680
-MeshCollider:
+--- !u!65 &7484733381657472951
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -310,10 +310,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.0003030074, y: 0.0013083817, z: 0.0015723143}
+  m_Center: {x: -0.000000008732081, y: 0.00008765662, z: -0.000019482375}
 --- !u!1 &1341313533273793429
 GameObject:
   m_ObjectHideFlags: 0

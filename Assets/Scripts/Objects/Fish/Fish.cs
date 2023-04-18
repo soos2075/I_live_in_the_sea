@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Predator), typeof(Prey))]
+[RequireComponent(typeof(Predator), typeof(Prey), typeof(Area))]
 public class Fish : MonoBehaviour
 {
     #region 기본스탯
@@ -155,22 +155,19 @@ public class Fish : MonoBehaviour
     }
     #endregion
 
-    #region Boundary설정
-
-    protected List<string> boundaryTagList;
-
-    #endregion
 
     public Transform Pos_Head { get; set; }
     public Transform Pos_Tail { get; set; }
+    public Transform Pos_Gravity { get; set; }
 
     void Start()
     {
         Pos_Head = transform.GetChild(0).GetChild(1);
         Pos_Tail = transform.GetChild(0).GetChild(0);
+        Transform qwer = Util.FindChild<Transform>(gameObject, "Pos_Gravity", true);
+        Pos_Gravity = qwer == null ? transform : qwer;
 
         Initialize();
-        forward = Coordinate.Front.normalized;
 
         if (playerable == Playerable.Player)
         {
@@ -188,6 +185,8 @@ public class Fish : MonoBehaviour
             searchFoodCoroutine = StartCoroutine(SearchFoodCoroutine());
             StayBoundary();
         }
+
+        transform.localScale = (Vector3.one * Size * 0.1f);
     }
 
     protected virtual void Initialize()
@@ -204,16 +203,16 @@ public class Fish : MonoBehaviour
     }
 
 
-    bool CheckOcean()
+    public bool CheckOcean()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, 10, LayerMask.GetMask("Water")))
+        if (Physics.Raycast(Pos_Gravity.transform.position, Vector3.down, 100, LayerMask.GetMask("Water")))
         {
-            rig.useGravity = true;
+            //rig.useGravity = true;
             return true;
         }
         else
         {
-            rig.useGravity = false;
+            //rig.useGravity = false;
             return false;
         }
     }
@@ -225,11 +224,14 @@ public class Fish : MonoBehaviour
     //}
     private void FixedUpdate()
     {
+        //? 중력량 테스트
+        //rig.AddForce(Vector3.down * Time.deltaTime * 1500, ForceMode.Acceleration);
+
         VirtualFixedUpdate();
 
         if (CheckOcean())
         {
-            return;
+            rig.AddForce(Vector3.down * Time.deltaTime * 1500, ForceMode.Acceleration);
         }
         
         switch (playerable)
@@ -263,19 +265,24 @@ public class Fish : MonoBehaviour
     {
         Hunger();
 
-        Vector3 ego = SetEgoVector() * Weight_Ego * (currentSpeed * 0.5f);
+        Vector3 ego = SetEgoVector() * Weight_Ego;// * (currentSpeed * 0.5f);
         Vector3 cohesion = CalculateCohesionVector() * Weight_Cohesion;
+
         Vector3 alignment = CalculateAlignmentVector() * Weight_Alignment;
+        Vector3 alignmentDirection = CalculateAlignmentDirectionVector() * Weight_Alignment * 0.5f;
+
         Vector3 separation = CalculateSeparationVector() * Weight_Separation;
         Vector3 leader = CalculateLeaderVector() * Weight_Leader;
         Vector3 food = CalculateFood();
         Vector3 predator = CalculatePredator() * 10;
-        AvodeGround();
+        Vector3 avoidGround = CalculateAvoidGroundVector() * 10;
+
+        WaterBlow();
 
         switch (StateFish)
         {
             case State.Wander:
-                currentDir = (ego * 1.5f) + cohesion + alignment + separation + (food * 0.5f) ;
+                currentDir = (ego * 1.25f) + cohesion + alignment + separation + (food * 0.5f) + avoidGround;
                 break;
 
             case State.Sleep:
@@ -284,7 +291,7 @@ public class Fish : MonoBehaviour
 
             case State.Activity:
                 Activity();
-                currentDir = (ego * 0.5f) + cohesion + alignment + separation + (leader * 2);
+                currentDir = (ego * 0.75f) + cohesion + alignment + alignmentDirection + separation + leader + avoidGround;
                 break;
 
             case State.SlowFood:
@@ -315,11 +322,10 @@ public class Fish : MonoBehaviour
     }
 
     #region protected Field
-    protected Vector3 currentDir;
+    protected Vector3 currentDir { get; set; }
     protected float currentSpeed;
     protected Rigidbody rig;
     protected int ranAngle;
-    protected Vector3 forward;
     protected float lastRotateCount;
 
     protected Vector3 ranDir;
@@ -333,22 +339,21 @@ public class Fish : MonoBehaviour
     {
         lastRotateCount += Time.deltaTime;
         //? 역방향 회전시 순간부스터
-        if (Mathf.Abs(forward.x) > 0.25f && Mathf.Abs(currentDir.normalized.x) > 0.25f && Mathf.Abs(forward.x + currentDir.normalized.x) < 0.5f)
+        if (Mathf.Abs(Coordinate.Front.x) > 0.25f && Mathf.Abs(currentDir.normalized.x) > 0.25f && Mathf.Abs(Coordinate.Front.x + currentDir.normalized.x) < 0.5f)
         {
             ranAngle = Random.Range(-15, 15);
-            forward = currentDir.normalized;
             currentSpeed = Mathf.Lerp(currentSpeed, CalculateAlignmentSpeed(), Random.Range(0.3f,0.9f));
-            rig.AddForce(currentDir.normalized * Time.deltaTime * MoveSpeed * ForceNormal * 10);
+            rig.AddForce(currentDir.normalized * Time.deltaTime * MoveSpeed * 2, ForceMode.Impulse);
             lastRotateCount = 0;
         }
 
         lerpSpd = Mathf.Lerp(currentSpeed, CalculateAlignmentSpeed(), 0.5f);
         //float lerpSpd = CalculateAlignmentSpeed();
 
-        lerpDir = Vector3.Lerp(Coordinate.Front.normalized, currentDir.normalized, 0.35f);
+        lerpDir = Vector3.Lerp(Coordinate.Front.normalized, currentDir.normalized, 0.4f);
         //Vector3 lerpDir = currentDir;
 
-       rig.AddForce(lerpDir.normalized * Time.deltaTime * lerpSpd * ForceNormal);
+        rig.AddForce(lerpDir.normalized * Time.deltaTime * lerpSpd * ForceNormal);
         //rig.AddForce(moveDir.normalized * Time.deltaTime * currentSpeed * forceNormal);
 
         float degree = Mathf.Atan2(lerpDir.x, lerpDir.y) * -Mathf.Rad2Deg;
@@ -378,7 +383,6 @@ public class Fish : MonoBehaviour
                     Time.deltaTime * RotaSpeed);
             }
         }
-
     }
 
 
@@ -419,7 +423,7 @@ public class Fish : MonoBehaviour
     protected int FlockCount { get; set; }
     protected float FlockRadius { get; set; }
     protected float SearchRadius { get; set; }
-    protected float SearchAngle { get; set; }
+    protected float SearchFOV { get; set; }
 
     protected int FlockLayer { get; set; }
     public int PreyLayer { get; protected set; }
@@ -452,19 +456,36 @@ public class Fish : MonoBehaviour
         return cohesionVec;
     }
 
-    //? 정렬 - Alignment (1. 방향 동화 2. 방향 유지)
+    //? 전방 정렬 - Alignment Foward (개체들이 보고있는 방향의 평균)
     protected Vector3 CalculateAlignmentVector()
     {
         Vector3 alignmentVec = Vector3.zero;
         if (neighbours.Count > 1)
         {
-            //? 가야하는 방향과 그냥 오브젝트 기준 정면방향 두가지 방법이 있음
-            //? 1. 동화 - 단체회전이 잦음. 대신 에어리어를 잘지키고 확 방향전환을 순간가속을 함.
-            //? 2. 유지 - 단체이동중 에어리어를 벗어나도 꽤나 전진하는 모습. 추가로 정렬수치가 높으면 땅에 단체로 처박는 현상발생.
             for (int i = 0; i < neighbours.Count; i++)
             {
-                //alignmentVec += neighbours[i].currentDir;
                 alignmentVec += neighbours[i].Coordinate.Front;
+            }
+        }
+        else
+        {
+            return alignmentVec;
+        }
+
+        alignmentVec /= neighbours.Count;
+        alignmentVec.Normalize();
+        return alignmentVec;
+    }
+
+    //? 방향 정렬 - Alignment Direction (개체들이 가고싶은 방향(EgoVector)의 평균)
+    protected Vector3 CalculateAlignmentDirectionVector()
+    {
+        Vector3 alignmentVec = Vector3.zero;
+        if (neighbours.Count > 1)
+        {
+            for (int i = 0; i < neighbours.Count; i++)
+            {
+                alignmentVec += neighbours[i].currentDir;
             }
         }
         else
@@ -583,39 +604,72 @@ public class Fish : MonoBehaviour
     }
 
     //? 지형회피 - Avode
-    protected void AvodeGround()
+    protected Vector3 CalculateAvoidGroundVector()
     {
+        Vector3 vec = Vector3.zero;
         RaycastHit hit;
-        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, InteractRadius, LayerMask.GetMask("Ground")))
+        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Ground"))||
+            Physics.Raycast(Pos_Head.transform.position, Quaternion.AngleAxis(SearchFOV, transform.forward) * Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Ground"))||
+            Physics.Raycast(Pos_Head.transform.position, Quaternion.AngleAxis(-SearchFOV, transform.forward) * Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Ground")))
         {
-            //ranDir = new Vector3(hit.normal.x, hit.normal.y, 0);
-            //rig.AddForce(ranDir.normalized * Time.deltaTime * ForceNormal * MoveSpeed * 10);
-            ranDir = Vector3.Reflect(Coordinate.Front, hit.normal);
-            rig.AddForce(ranDir.normalized * Time.deltaTime * 20, ForceMode.VelocityChange);
+            vec = new Vector3(hit.normal.x, hit.normal.y, 0);
+            ranDir = vec + Vector3.Reflect(Coordinate.Front, hit.normal);
+            rig.AddForce(ranDir.normalized * Time.deltaTime * 100, ForceMode.Impulse);
+            neighbours.Clear();
         }
-
-        if (Physics.Raycast(transform.position, Coordinate.Front, out hit, InteractRadius, LayerMask.GetMask("Water")))
-        {
-            ranDir = Vector3.Reflect(Coordinate.Front, hit.normal);
-        }
-
-        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, (InteractRadius * 0.25f), LayerMask.GetMask("Phytoplankton")))
-        {
-            if (rig.mass <= hit.collider.gameObject.GetComponentOrParent<Rigidbody>().mass * 3)
-            {
-                rig.AddForce(Coordinate.Back * Time.deltaTime * ForceNormal * 2, ForceMode.Impulse);
-            }
-        }
+        vec.Normalize();
+        return vec;
     }
 
+
+    //? 물넘기 - WaterBlow
+    protected void WaterBlow()
+    {
+        //Debug.DrawRay(Pos_Head.transform.position, Coordinate.Front * InteractRadius, Color.red);
+
+        RaycastHit hit;
+        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, InteractRadius, LayerMask.GetMask("Water")))
+        {
+            if (ContactSurface == null && !CheckOcean())
+            {
+                ContactSurface = StartCoroutine(ReturnTheSea(Vector3.Reflect(Coordinate.Front, hit.normal)));
+            }
+        }
+
+    }
+
+    Coroutine ContactSurface;
+    Coroutine Co_SimpleTimer;
+    bool isTimeOver;
+    IEnumerator ReturnTheSea(Vector3 dir)
+    {
+        Co_SimpleTimer = StartCoroutine(SimpleTimer(3));
+        yield return new WaitUntil(() => (CheckOcean()) || isTimeOver);
+        if (!isTimeOver)
+        {
+            StopCoroutine(Co_SimpleTimer);
+            ranDir = dir;
+            rig.AddForce(Coordinate.Front.normalized * Time.deltaTime * 200, ForceMode.VelocityChange);
+        }
+        ContactSurface = null;
+    }
+    IEnumerator SimpleTimer(float timer)
+    {
+        isTimeOver = false;
+        float temp = 0;
+        while (temp < timer)
+        {
+            temp += Time.deltaTime;
+            yield return null;
+        }
+        isTimeOver = true;
+    }
+
+
     //? 지역머물기 - Stay
-    protected Boundary.Data boundaryData;
     protected void StayBoundary()
     {
-        if (boundaryData != null)
-        {
-            returnBoundary = StartCoroutine(ReturnBoundary());
-        }
+        returnBoundary = StartCoroutine(ReturnBoundary());
     }
 
 
@@ -651,13 +705,13 @@ public class Fish : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, FlockRadius, FlockLayer);
         for (int i = 0; i < colls.Length; i++)
         {
-            neighbours.Add(colls[i].gameObject.GetComponentOrParent<Fish>());
-            if (i > FlockCount)
+            if (i >= FlockCount)
             {
                 break;
             }
+            neighbours.Add(colls[i].gameObject.GetComponentOrParent<Fish>());
         }
-        yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+        yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
         findNeighbourCoroutine = StartCoroutine("FindNeighbourCoroutine");
     }
 
@@ -701,7 +755,7 @@ public class Fish : MonoBehaviour
     Coroutine randomValueCor;
     IEnumerator RandomValueRepeater()
     {
-        yield return new WaitUntil(() => lastRotateCount > RandomResetCount);
+        yield return new WaitUntil(() => lastRotateCount > Random.Range(RandomResetCount * 0.5f, RandomResetCount));
         SetRandomValue();
         lastRotateCount = 0;
         randomValueCor = StartCoroutine(RandomValueRepeater());
@@ -711,11 +765,13 @@ public class Fish : MonoBehaviour
     //? Boundary로 돌아가기
     IEnumerator ReturnBoundary()
     {
-        yield return new WaitForSeconds(Random.Range(0.5f, 1.0f));
-        if (!Physics.CheckSphere(transform.position, Size, AreaLayer))
+        yield return new WaitForSeconds(Random.Range(1.0f, 2.0f));
+        if (!Physics.CheckSphere(transform.position, 1, AreaLayer))
         {
-            float offset = boundaryData.radius * 0.5f;
-            ranDir = (boundaryData.centerPos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
+            var data = GameManager.Area.GetCloseBoundary(AreaLayer, transform.position).GetBoundaryData();
+            float offset = data.radius * 0.5f;
+            ranDir = (data.centerPos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
+            lastRotateCount = 0;
         }
         returnBoundary = StartCoroutine(ReturnBoundary());
     }

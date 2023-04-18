@@ -6,16 +6,16 @@ public class MoorishIdol : Fish
 {
     [Space(10)]
     [Header("Default Settings")]
-    public float _size;
-    public float _moveSpeed;
-    public float _rotaSpeed;
-    public float _forceNormal;
-    public float _forceWeak;
-    public float _interactRadius;
+    public float _size = 10;
+    public float _moveSpeed = 5;
+    public float _rotaSpeed = 5;
+    public float _forceNormal = 100;
+    public float _forceWeak = 10;
+    public float _interactRadius = 0.25f;
 
     [Space(10)]
     [Header("Weight Settings")]
-    [Range(0, 5)] public float _ego;
+    [Range(0, 5)] public float _ego = 1;
     [Range(0, 5)] public float _cohesion;
     [Range(0, 5)] public float _alignment;
     [Range(0, 5)] public float _separation;
@@ -23,11 +23,11 @@ public class MoorishIdol : Fish
 
     [Space(10)]
     [Header("Etc Settings")]
-    public float _randomResetCount;
+    public float _randomResetCount = 10;
     public int _flockCount;
     public float _flockRadius;
-    public float _predatorRadius;
-    public float _predatorAngle;
+    public float _predatorRadius = 5;
+    public float _predatorAngle = 60;
     public bool showRadiusGizmos;
 
 
@@ -52,7 +52,7 @@ public class MoorishIdol : Fish
         FlockCount = _flockCount;
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
-        SearchAngle = _predatorAngle;
+        SearchFOV = _predatorAngle;
     }
 
 

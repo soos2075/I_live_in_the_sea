@@ -38,6 +38,7 @@ public class Shark : Fish
         FlockLayer = LayerMask.GetMask("Fish_Small") | LayerMask.GetMask("Fish_Middle");
         PredatorLayer = GetComponent<Prey>().predatorLayer;
         PreyLayer = GetComponent<Predator>().preyLayer;
+        AreaLayer = GetComponent<Area>().areaLayer;
 
         InteractRadius = _interactRadius;
     }
@@ -50,15 +51,9 @@ public class Shark : Fish
         FlockCount = _flockCount;
         FlockRadius = _flockRadius;
         SearchRadius = _predatorRadius;
-        SearchAngle = _predatorAngle;
+        SearchFOV = _predatorAngle;
+    }
 
-        //SetBoundary();
-    }
-    void SetBoundary()
-    {
-        AreaLayer = LayerMask.GetMask("Boundary");
-        boundaryData = FindObjectOfType<Boundary>().GetBoundaryData();
-    }
 
 
     protected override void Initialize()

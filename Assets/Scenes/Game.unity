@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 14468341d32f05045acf591973491cb0,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2736,6 +2736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0
   addForce: 0
+  lastHorizontalInput: 0
 --- !u!4 &467452062 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4646933745565138, guid: 4983f395b2610de4e9f688a87bbd9af9,
@@ -8005,6 +8006,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f9577b4dda6cc546abea4737be5a392, type: 3}
+--- !u!4 &1615998731 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6214015685607558054, guid: 135ca4b53364e2e4da2de906499feb69,
+    type: 3}
+  m_PrefabInstance: {fileID: 1855827926}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1616686498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10758,7 +10765,7 @@ PrefabInstance:
         type: 3}
       propertyPath: chasingTarget
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1615998731}
     - target: {fileID: 8730296048172410887, guid: c8d4886e73ad27449813c9f2b79cc45d,
         type: 3}
       propertyPath: m_Name

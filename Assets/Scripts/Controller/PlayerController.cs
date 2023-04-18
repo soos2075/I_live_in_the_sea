@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rig.useGravity)
+        if (fish.CheckOcean())
         {
             addForce = fish.ForceWeak;
         }
@@ -50,18 +50,88 @@ public class PlayerController : MonoBehaviour
         {
             addForce = fish.ForceNormal;
         }
-        
+
         CollisionCheck();
         PlayerMoveKeyboard();
+        RotateFinish();
+        //TestFOV();
+    }
+
+    void TestFOV()
+    {
+        Vector3 dir = Quaternion.AngleAxis(30, transform.forward) * transform.right;
+        Vector3 dir2 = Quaternion.AngleAxis(-30, transform.forward) * transform.right;
+
+        Debug.DrawRay(transform.position, dir * 2, Color.red);
+        Debug.DrawRay(transform.position, dir2 * 2, Color.green);
+    }
+
+
+    public float lastHorizontalInput = 0;
+    void RotateFinish()
+    {
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            lastHorizontalInput = Input.GetAxis("Horizontal");
+        }
+
+        if (Mathf.Abs(Input.GetAxis("Vertical")) == 1)
+        {
+            return;
+        }
+
+        if (transform.eulerAngles.y % 180 < 1 || transform.eulerAngles.y % 180 > 179)
+        {
+            return;
+        }
+
+
+        //Debug.Log("들어오고잇음 분명");
+
+        Vector3 onlyDir = Vector3.zero;
+
+        if (lastHorizontalInput >= 0)
+        {
+            if (transform.eulerAngles.y < 180)
+            {
+                onlyDir = new Vector3(Vector3.right.x, transform.right.y, 0);
+            }
+            else if(transform.eulerAngles.y > 180)
+            {
+                onlyDir = new Vector3(Vector3.right.x, -transform.right.y, 0);
+            }
+        }
+        else
+        {
+            if (transform.eulerAngles.y < 180)
+            {
+                onlyDir = new Vector3(Vector3.left.x, transform.right.y, 0);
+            }
+            else if (transform.eulerAngles.y > 180)
+            {
+                onlyDir = new Vector3(Vector3.left.x, -transform.right.y, 0);
+            }
+        }
+
+
+
+        float angle_Z = 90 + Mathf.Atan2(onlyDir.x, onlyDir.y) * -Mathf.Rad2Deg;
+        if (lastHorizontalInput > 0)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle_Z),
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
+        }
+        else if (lastHorizontalInput < 0)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -angle_Z),
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
+        }
     }
 
 
     void PlayerMoveKeyboard()
     {
-        //? 기본이동
-        //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), Time.deltaTime * rotaSpeed);
-        //transform.Translate(moveDir.normalized * Time.deltaTime * moveSpeed, Space.World);
-
+        //? 방향
         Vector3 moveDir = Vector3.up * Input.GetAxis("Vertical") + Vector3.right * Input.GetAxis("Horizontal");
 
         //? 이동
@@ -75,24 +145,30 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle_Z),
-                Time.deltaTime * fish.RotaSpeed);
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
         }
         else if (Input.GetAxisRaw("Horizontal") < 0)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -angle_Z),
-                Time.deltaTime * fish.RotaSpeed);
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
         }
-        else if (Input.GetAxisRaw("Vertical") != 0)
+
+        if (Mathf.Abs(Input.GetAxis("Vertical")) == 1)
         {
-            if (Mathf.Abs(transform.eulerAngles.y) > 90)
+            //Debug.Log(transform.eulerAngles.y + "///" + angle_Z);
+            float y = (transform.eulerAngles.y <= 180) 
+                ? transform.eulerAngles.y 
+                : 360 - transform.eulerAngles.y;
+
+            if (y >= 90)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(180, 0, -angle_Z),
-                Time.deltaTime * fish.RotaSpeed);
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
             }
-            else if (Mathf.Abs(transform.eulerAngles.y) < 90)
+            else if (y < 90)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle_Z),
-                Time.deltaTime * fish.RotaSpeed);
+                Time.deltaTime * fish.RotaSpeed * 0.5f);
             }
         }
     }
@@ -127,7 +203,7 @@ public class PlayerController : MonoBehaviour
 
 
         Ray body = new Ray(pos_Head.position, fish.Coordinate.Back);
-        float length = (pos_Head.localPosition.x - pos_Tail.localPosition.x) * transform.localScale.x;
+        float length = (pos_Head.position.x - pos_Tail.position.x);
         Debug.DrawRay(pos_Head.position, fish.Coordinate.Back * length, Color.black);
 
         RaycastHit[] hit_body = Physics.RaycastAll(body, length, LayerMask.GetMask("Ground") | LayerMask.GetMask("Obstacle"));

@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 6824620508094202820}
   - component: {fileID: 4087506235847169252}
   - component: {fileID: 2736216233640987250}
+  - component: {fileID: 8622223622231222598}
   - component: {fileID: 3455078738540559520}
   m_Layer: 29
   m_Name: 00_Anchovy
@@ -213,6 +214,20 @@ MonoBehaviour:
   - Predator_Large
   isFade: 0
   mat: {fileID: 0}
+--- !u!114 &8622223622231222598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2835128554215892342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b59f682692d0c46b991790f2c12d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  areaList:
+  - Area_Seaweed
 --- !u!114 &3455078738540559520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,22 +251,22 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 0
+  _size: 10
   _moveSpeed: 5
   _rotaSpeed: 7
   _forceNormal: 100
   _forceWeak: 10
   _interactRadius: 0.25
-  _ego: 0.8
-  _cohesion: 1.7
-  _alignment: 1.5
-  _separation: 1
+  _ego: 1
+  _cohesion: 1.2
+  _alignment: 1
+  _separation: 1.2
   _leader: 1
   _randomResetCount: 15
   _flockCount: 10
   _flockRadius: 3
   _predatorRadius: 5
-  _predatorAngle: 120
+  _FOV: 60
   showRadiusGizmos: 0
 --- !u!1 &2869389271867496353
 GameObject:
