@@ -29,6 +29,7 @@ public class SharkWhite : Fish
     public float _predatorRadius;
     public float _predatorAngle;
     public bool showRadiusGizmos;
+    public bool showInteractRadius;
 
 
 
@@ -105,8 +106,17 @@ public class SharkWhite : Fish
     {
         if (showRadiusGizmos)
         {
+            Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, _flockRadius);
+
+            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _predatorRadius);
+        }
+
+        if (showInteractRadius)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.GetChild(0).GetChild(1).position, _interactRadius);
         }
     }
 }

@@ -8,7 +8,7 @@ public class Predator : MonoBehaviour
     public List<string> preyList;
     public int preyLayer { get; set; }
 
-    public bool showInteractRadius;
+    //public bool showInteractRadius;
 
     private void Awake()
     {
@@ -29,13 +29,13 @@ public class Predator : MonoBehaviour
         //Debug.DrawRay(head.position, transform.right * eatingDistance);
     }
 
-    private void OnDrawGizmos()
-    {
-        if (showInteractRadius)
-        {
-            Gizmos.DrawWireSphere(fish.Pos_Head.position, fish.InteractRadius);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (showInteractRadius)
+    //    {
+    //        Gizmos.DrawWireSphere(fish.Pos_Head.position, fish.InteractRadius);
+    //    }
+    //}
 
     void EatingFood()
     {

@@ -136,7 +136,7 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 1
+  _size: 10
   _moveSpeed: 5
   _rotaSpeed: 4
   _forceNormal: 100

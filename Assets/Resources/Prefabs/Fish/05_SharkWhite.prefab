@@ -105,8 +105,8 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 0
-  _moveSpeed: 12
+  _size: 15
+  _moveSpeed: 20
   _rotaSpeed: 2
   _forceNormal: 1000
   _forceWeak: 100

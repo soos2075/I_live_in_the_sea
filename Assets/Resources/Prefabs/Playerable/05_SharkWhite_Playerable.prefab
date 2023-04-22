@@ -192,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 0
   addForce: 0
+  lastHorizontalInput: 0
 --- !u!114 &6206475170699735758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,11 +205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3221851760b66774aaf9e6fdf3920ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eatingDistance: 1
   preyList:
   - Fish_Large
   - Fish_Middle
   - Fish_Small
+  showInteractRadius: 0
 --- !u!114 &6206475170699735757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,11 +250,12 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 10
+  _size: 15
   _moveSpeed: 10
   _rotaSpeed: 3
   _forceNormal: 1000
   _forceWeak: 100
+  _interactRadius: 0
   _ego: 1
   _cohesion: 0
   _alignment: 0
