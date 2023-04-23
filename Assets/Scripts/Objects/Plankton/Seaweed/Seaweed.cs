@@ -7,7 +7,6 @@ public class Seaweed : Plankton
     //? Moss,Caral,Kelp를 각각 스크립트로 나눌지 하나로 할지는 추후 결정
 
 
-
     public int maximumPreyCount;
     public int currentPreyCount;
 
@@ -37,6 +36,7 @@ public class Seaweed : Plankton
         if (!preyArray[num])
         {
             preyArray[num] = Instantiate(preyObj, transform.GetChild(num)).GetComponent<Prey>();
+            preyArray[num].transform.rotation = Quaternion.LookRotation(Vector3.forward);
             preyArray[num].eatenEvent = () => EatenEvent(num);
             currentPreyCount++;
             Debug.Log($"{num} 번 먹이 신규생성");

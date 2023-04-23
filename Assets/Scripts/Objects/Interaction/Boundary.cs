@@ -70,4 +70,22 @@ public class Boundary : MonoBehaviour
     }
 
 
+    public bool showGizmo;
+
+    private void OnDrawGizmos()
+    {
+        //? collider.bounds.center는 월드좌표, collider.center는 로컬좌표로 나오나봄?
+        if (showGizmo)
+        {
+            //Debug.Log(GetComponent<Collider>().bounds.center);
+
+            Vector3 cen = GetComponent<Collider>().bounds.center;
+            float sizeX = GetComponent<Collider>().bounds.size.x;
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(cen, new Vector3(sizeX, 1, 1));
+        }
+    }
+
+
 }
