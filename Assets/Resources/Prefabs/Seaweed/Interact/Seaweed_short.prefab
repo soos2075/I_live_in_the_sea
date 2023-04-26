@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 1502568332909848442}
   - component: {fileID: 2555206084521928927}
   - component: {fileID: 329076325707439125}
-  - component: {fileID: 3051165685914449943}
   - component: {fileID: 2877967476265416220}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Seaweed_short
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2274847074458009024}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.8699994, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5307086745345670728}
@@ -83,20 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &3051165685914449943
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2274847074458009024}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3757025919985957130, guid: 69d87043242935848a50375aa8d5b942, type: 3}
 --- !u!114 &2877967476265416220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5307086745345670728}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PreyPos_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8045850913475615929}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PreyPos_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

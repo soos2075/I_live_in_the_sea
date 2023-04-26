@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2813791675988638776}
   m_Layer: 23
   m_Name: 10_WhaleSperm_Playerable
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preyList:
   - Fish_Small
-  showInteractRadius: 0
 --- !u!114 &2532819155398988164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,6 +168,7 @@ MonoBehaviour:
   _predatorRadius: 15
   _predatorAngle: 0
   showRadiusGizmos: 1
+  showInteractRadius: 0
 --- !u!1 &2532819156183607507
 GameObject:
   m_ObjectHideFlags: 0

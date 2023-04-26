@@ -16,7 +16,14 @@ public class PlayerCameraController : MonoBehaviour
     }
     void Start()
     {
-        
+        if (chasingTarget == null)
+        {
+            var go = GameObject.FindGameObjectWithTag("Player");
+            if (go)
+            {
+                chasingTarget = go.transform;
+            }
+        }
     }
 
     void Update()

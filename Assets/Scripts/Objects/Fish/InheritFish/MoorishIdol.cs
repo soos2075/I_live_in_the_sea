@@ -28,7 +28,6 @@ public class MoorishIdol : Fish
     public float _flockRadius;
     public float _predatorRadius = 5;
     public float _predatorAngle = 60;
-    public bool showRadiusGizmos;
 
 
 
@@ -134,15 +133,23 @@ public class MoorishIdol : Fish
 
 
 
+    public bool showRadiusGizmos;
+    public bool showInteractRadius;
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, FlockRadius);
+            Gizmos.DrawWireSphere(transform.position, _flockRadius);
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, SearchRadius);
+            Gizmos.DrawWireSphere(transform.position, _predatorRadius);
+        }
+
+        if (showInteractRadius)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.GetChild(0).GetChild(1).position, _interactRadius);
         }
     }
 

@@ -67,7 +67,6 @@ MonoBehaviour:
   preyList:
   - Zooplankton
   - Phytoplankton
-  showInteractRadius: 0
 --- !u!114 &470675272071215926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,23 +124,24 @@ MonoBehaviour:
   predator: []
   abilityGage: 0
   abilityGageMax: 0
-  _size: 20
+  _size: 12
   _moveSpeed: 4
-  _rotaSpeed: 8
+  _rotaSpeed: 6
   _forceNormal: 100
   _forceWeak: 10
   _interactRadius: 0.25
-  _ego: 2
-  _cohesion: 1
+  _ego: 0.9
+  _cohesion: 1.1
   _alignment: 0.6
   _separation: 1
-  _leader: 0
+  _leader: 1
   _randomResetCount: 20
   _flockCount: 5
   _flockRadius: 5
   _predatorRadius: 5
-  _predatorAngle: 60
+  _predatorAngle: 30
   showRadiusGizmos: 0
+  showInteractRadius: 0
 --- !u!1 &669058909480344538
 GameObject:
   m_ObjectHideFlags: 0

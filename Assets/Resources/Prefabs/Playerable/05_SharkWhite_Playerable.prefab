@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 5911868748386180977}
   m_Layer: 24
   m_Name: 05_SharkWhite_Playerable
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,7 +209,6 @@ MonoBehaviour:
   - Fish_Large
   - Fish_Middle
   - Fish_Small
-  showInteractRadius: 0
 --- !u!114 &6206475170699735757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +266,7 @@ MonoBehaviour:
   _predatorRadius: 15
   _predatorAngle: 0
   showRadiusGizmos: 1
+  showInteractRadius: 0
 --- !u!1 &6206475171485687835
 GameObject:
   m_ObjectHideFlags: 0

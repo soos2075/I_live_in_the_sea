@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 6214015685607558056}
   m_Layer: 29
   m_Name: 01_Anchovy_Playerable
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   _predatorRadius: 5
   _FOV: 0
   showRadiusGizmos: 0
+  showInteractRadius: 0
 --- !u!114 &6214015685607558057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +169,6 @@ MonoBehaviour:
   preyList:
   - Zooplankton
   - Phytoplankton
-  showInteractRadius: 0
 --- !u!114 &6214015685607558058
 MonoBehaviour:
   m_ObjectHideFlags: 0

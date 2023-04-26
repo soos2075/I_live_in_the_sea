@@ -28,8 +28,7 @@ public class Anchovy : Fish
     public float _flockRadius;
     public float _predatorRadius;
     public float _FOV;
-    public bool showRadiusGizmos;
-    public bool showInteractRadius;
+
 
 
 
@@ -133,7 +132,8 @@ public class Anchovy : Fish
 
 
 
-
+    public bool showRadiusGizmos;
+    public bool showInteractRadius;
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)

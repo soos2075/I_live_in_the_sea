@@ -28,6 +28,8 @@ public class Fish : MonoBehaviour
     public enum State
     {
         Non,
+
+        Ego,
         Wander,
         Sleep,
         Activity,
@@ -50,6 +52,9 @@ public class Fish : MonoBehaviour
             state = value;
             switch (state)
             {
+                case State.Ego:
+                    currentSpeed = ranSpd * 0.5f;
+                    break;
                 case State.Wander:
                     currentSpeed = ranSpd * 0.5f;
                     break;
@@ -88,6 +93,11 @@ public class Fish : MonoBehaviour
             if (StateFish == State.Runaway) return;
             StateFish = State.Runaway;
         }
+        else if (ContactCoral())
+        {
+            if (StateFish == State.Ego) return;
+            StateFish = State.Ego;
+        }
         else if (HungerGage < 90 && food.Count > 3)
         {
             if (StateFish == State.SlowFood) return;
@@ -108,10 +118,15 @@ public class Fish : MonoBehaviour
             if (StateFish == State.Sleep) return;
             StateFish = State.Sleep;
         }
-        else
+        else if (neighbours.Count > 2)
         {
             if (StateFish == State.Wander) return;
             StateFish = State.Wander;
+        }
+        else
+        {
+            if (StateFish == State.Ego) return;
+            StateFish = State.Ego;
         }
     }
 
@@ -281,6 +296,10 @@ public class Fish : MonoBehaviour
 
         switch (StateFish)
         {
+            case State.Ego:
+                currentDir = ego;
+                break;
+
             case State.Wander:
                 currentDir = (ego * 1.25f) + cohesion + alignment + separation + (food * 0.5f) + avoidGround;
                 break;
@@ -299,8 +318,8 @@ public class Fish : MonoBehaviour
                 break;
 
             case State.FastFood:
-                currentDir = (ego * 0.5f) + (separation * 2.5f) + (food * 2.5f);
                 Activity();
+                currentDir = (ego * 0.5f) + (separation * 2.5f) + (food * 2.5f);
                 break;
 
             case State.Runaway:
@@ -621,6 +640,26 @@ public class Fish : MonoBehaviour
         return vec;
     }
 
+    //? 산호초에 닿을때?
+    protected bool ContactCoral()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Pos_Head.transform.position, Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Seaweed")) ||
+            Physics.Raycast(Pos_Head.transform.position, Quaternion.AngleAxis(SearchFOV, transform.forward) * Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Seaweed")) ||
+            Physics.Raycast(Pos_Head.transform.position, Quaternion.AngleAxis(-SearchFOV, transform.forward) * Coordinate.Front, out hit, InteractRadius * 2, LayerMask.GetMask("Seaweed")))
+        {
+            //rig.AddForce(-Coordinate.Front * Time.deltaTime * 50, ForceMode.VelocityChange);
+            rig.AddForceAtPosition(-Coordinate.Front * Time.deltaTime * 50, hit.point, ForceMode.VelocityChange);
+            var vec = new Vector3(hit.normal.x, hit.normal.y, 0);
+            ranDir = vec + Vector3.Reflect(Coordinate.Front, hit.normal);
+            neighbours.Clear();
+            return true;
+        }
+        return false;
+    }
+
+
+
 
     //? 물넘기 - WaterBlow
     protected void WaterBlow()
@@ -695,7 +734,9 @@ public class Fish : MonoBehaviour
 
 
 
-    //? 코루틴
+
+
+
     #region Coroutine
     //? 군체찾기
     Coroutine findNeighbourCoroutine;
@@ -769,8 +810,9 @@ public class Fish : MonoBehaviour
         if (!Physics.CheckSphere(transform.position, 1, AreaLayer))
         {
             var data = GameManager.Area.GetCloseBoundary(AreaLayer, transform.position).GetBoundaryData();
-            float offset = data.radius * 0.5f;
-            ranDir = (data.centerPos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
+            //float offset = data.radius * 0.5f;
+            //ranDir = (data.centerPos + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0)) - transform.position;
+            ranDir = data.GetRandomPosition() - transform.position;
             lastRotateCount = 0;
         }
         returnBoundary = StartCoroutine(ReturnBoundary());

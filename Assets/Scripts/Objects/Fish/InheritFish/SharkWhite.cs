@@ -28,9 +28,6 @@ public class SharkWhite : Fish
     public float _flockRadius;
     public float _predatorRadius;
     public float _predatorAngle;
-    public bool showRadiusGizmos;
-    public bool showInteractRadius;
-
 
 
     void Settings_Default()
@@ -102,6 +99,8 @@ public class SharkWhite : Fish
     #endregion
 
 
+    public bool showRadiusGizmos;
+    public bool showInteractRadius;
     private void OnDrawGizmos()
     {
         if (showRadiusGizmos)

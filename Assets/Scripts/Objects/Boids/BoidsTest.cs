@@ -14,6 +14,9 @@ public class BoidsTest : MonoBehaviour
 
     public List<int> quantityList;
 
+
+
+
     void Start()
     {
         Spawn();
@@ -28,11 +31,23 @@ public class BoidsTest : MonoBehaviour
 
                 ranVec = Random.insideUnitSphere * 5 * Vector2.one;
                 ranRot = Quaternion.Euler(0, 0, Random.Range(0, 360));
-                var aaa = Instantiate(objList[i], ranVec + pos.position, ranRot);
+                var aaa = Instantiate(objList[i], ranVec + pos.position, ranRot, Root(objList[i].name));
             }
         }
     }
-
+    Transform Root(string name)
+    {
+        GameObject root = GameObject.Find(name);
+        if (root != null)
+        {
+            return root.transform;
+        }
+        else
+        {
+            root = new GameObject { name = name };
+            return root.transform;
+        }
+    }
 
 
     void Update()

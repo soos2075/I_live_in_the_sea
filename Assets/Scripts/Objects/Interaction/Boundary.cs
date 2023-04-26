@@ -26,7 +26,7 @@ public class Boundary : MonoBehaviour
         public float height;
         public int capsuleOption;
 
-        public Data(BoundaryType t, Vector3 pos, float r, Vector3 box_size, float _height = 0, int cap_Axis = 1)
+        public Data(BoundaryType t, Vector3 pos, float r, Vector3 box_size, float _height = 0, int cap_Axis = 0)
         {
             type = t;
             centerPos = pos;
@@ -35,6 +35,37 @@ public class Boundary : MonoBehaviour
 
             height = _height;
             capsuleOption = cap_Axis;
+        }
+
+
+        public Vector3 GetRandomPosition()
+        {
+            Vector3 vec = centerPos;
+            switch (type)
+            {
+                case BoundaryType.Sphere:
+                    vec = new Vector3(
+                        Random.Range(centerPos.x - radius, centerPos.x + radius),
+                        Random.Range(centerPos.y - radius, centerPos.y + radius),
+                        0);
+                    break;
+
+                case BoundaryType.Box:
+                    vec = new Vector3(
+                        Random.Range(centerPos.x - (boxSize.x * 0.5f), centerPos.x + (boxSize.x * 0.5f)),
+                        Random.Range(centerPos.y - (boxSize.y * 0.5f), centerPos.y + (boxSize.y * 0.5f)),
+                        0);
+                    break;
+
+                case BoundaryType.Capsule:
+                    vec = new Vector3(
+                        Random.Range(centerPos.x - (height * 0.5f), centerPos.x + (height * 0.5f)),
+                        Random.Range(centerPos.y - radius, centerPos.y + radius),
+                        0);
+                    break;
+            }
+
+            return vec;
         }
     }
 
@@ -68,6 +99,7 @@ public class Boundary : MonoBehaviour
     {
         return data;
     }
+
 
 
     public bool showGizmo;

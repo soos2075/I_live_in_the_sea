@@ -48,27 +48,36 @@ public class ObjectsGenerator : MonoBehaviour
                     , Vector3.down);
 
                 RaycastHit[] hits = Physics.RaycastAll(ray, 1000, LayerMask.GetMask(CreateCanvasLayer));
-                foreach (var hit in hits)
+
+                if (hits.Length > 0)
                 {
-                    CreateObject(hit.point);
+                    float _height = -1000;
+                    int _num = 0;
+                    for (int k = 0; k < hits.Length; k++)
+                    {
+                        if (hits[k].point.y > _height)
+                        {
+                            _height = hits[k].point.y;
+                            _num = k;
+                        }
+                    }
+                    CreateObject(hits[_num].point);
                 }
             }
         }
-        else
-        {
-            for (int i = 0; i < quantity; i++)
-            {
-                Ray ray = new Ray(new Vector3(pos_X1.position.x, 0, 0) + new Vector3(offset_X * i, 0, 0), Vector3.down);
-                //Debug.DrawRay(pos_X1.position + new Vector3(offset_X * i, 0, 0), Vector3.down * 1000, Color.red, 10);
-                RaycastHit[] hits = Physics.RaycastAll(ray, 1000, LayerMask.GetMask(CreateCanvasLayer));
-                foreach (var hit in hits)
-                {
-                    CreateObject(hit.point);
-                }
-            }
-        }
-
-
+        //else
+        //{
+        //    for (int i = 0; i < quantity; i++)
+        //    {
+        //        Ray ray = new Ray(new Vector3(pos_X1.position.x, 0, 0) + new Vector3(offset_X * i, 0, 0), Vector3.down);
+        //        //Debug.DrawRay(pos_X1.position + new Vector3(offset_X * i, 0, 0), Vector3.down * 1000, Color.red, 10);
+        //        RaycastHit[] hits = Physics.RaycastAll(ray, 1000, LayerMask.GetMask(CreateCanvasLayer));
+        //        foreach (var hit in hits)
+        //        {
+        //            CreateObject(hit.point);
+        //        }
+        //    }
+        //}
     }
 
     public bool isRandom;
